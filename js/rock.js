@@ -1,21 +1,30 @@
 $(document).ready(function () {
 
-    $('select').rocks().hide();
+    $('select').rocks({onChange:function(){
+        $(this).fadeOut().fadeIn();
+    }});
 
-
-    $("ul.rockdown").click(function () {
-        $(this).toggleClass("open");
-    });
 });
 
 
 // jquery plugin
 (function ($) {
-    $.fn.rocks = function () {
-        
+    $.fn.rocks = function (options) {
+
+        var settings = {
+            optionClass: 'option',
+            optClass: 'opt',
+            onChange : function(){}
+        };
+
+
         return this.each(function () {
-            var $this = $(this);
-     
+            if (options) {
+                $.extend(settings, options);
+            }
+
+            var $this = $(this).hide();
+
             var ul = $('<ul />', {
                 'class': 'rockdown'
             });
@@ -26,39 +35,40 @@ $(document).ready(function () {
             })).appendTo(ul);
 
             var ulul = $('<ul />', {
-                'class': 'options'
+                'class': settings.optionClass
             });
 
             $this.children('option:not(:selected),optgroup').each(function () {
                 if ($(this).is('optgroup')) {
                     ulul.append($('<li />', {
-                        'class': 'opt'
+                        'class': settings.optClass
                     }).append($('<span />', {
                         text: $(this).attr('label')
                     })));
                     var ululul = $('<ul />');
                     $(this).children().each(function () {
                         $('<li />', {
-							'class':'option',
-							title: $(this).val(),
+                            'class': settings.optionClass,
                             text: $(this).text()
-                        }).appendTo(ululul);
+                        }).data('val',$(this).val()).appendTo(ululul);
                     });
-                    ulul.find('li.opt:last').append(ululul);
+                    ulul.find('li.' + settings.optClass + ':last').append(ululul);
                 }
                 else {
                     $('<li />', {
                         text: $(this).text(),
-                        	title: $(this).val(),
-                        'class': 'option'
-                    }).appendTo(ulul);
+                        'class': settings.optionClass
+                    }).data('val',$(this).val()).appendTo(ulul);
                 }
                 ul.append(ulul);
             });
-            ul.delegate('li.option','click.rock',function(e){
-					$this.val($(e.target).attr('title'));
-					ul.find('span.handle').text($(e.target).text());
-				});
+            ul.delegate('li.option', 'click.rock', function (e) {
+                $this.val($(e.target).data('val'));
+                ul.find('span.handle').text($(e.target).text());
+                settings.onChange.call($this);
+            }).bind('click.rock',function(){
+                $(this).toggleClass('open');
+            });
             $('body').append(ul);
         });
     };
