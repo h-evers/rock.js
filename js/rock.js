@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $('select').rocks();
+    $('select').rocks().hide();
 
 
     $("ul.rockdown").click(function () {
