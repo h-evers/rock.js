@@ -1,23 +1,42 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<title>Rockdown</title>
-		<link rel="stylesheet" href="css/rock.css" type="text/css" />
-		<link rel="stylesheet" href="css/rocktheme/style.css" type="text/css" />
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-		<script type="text/javascript" src="js/rock.js"></script>
-	</head>
-	<body>
-		<select>
-			<option value="" selected="selected" disabled="disabled">Choose your weapon</option>
-			<option value="rabbit">A fluffy rabbit</option>
-			<optgroup label="Green frogs">
-				<option value="dead-frogs">Dead</option>
-				<option value="alive-frogs">Alive</option>
-			</optgroup>
-			<option value="lady">A pink lady</option>
-			<option value="lollipops">Red Lollipops</option>
-		</select>
-	</body>
+<head>
+    <meta charset="utf-8">
+    <title>Rockdown</title>
+    <link rel="stylesheet" href="css/rock.css" type="text/css">
+    <link rel="stylesheet" href="css/rocktheme/style.css" type="text/css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.rock.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+    	$('select').rocks();
+    });
+    </script>
+</head>
+<body>
+    <select>
+        <option value="" selected="selected" disabled="disabled">
+            Choose your weapon
+        </option>
+
+        <option value="rabbit">
+            A fluffy rabbit
+        </option>
+
+        <optgroup label="Green frogs">
+            <option value="dead-frogs">
+                Dead
+            </option>
+            <option value="alive-frogs">
+                Alive
+            </option>
+        </optgroup>
+        <option value="lady">
+            A pink lady
+        </option>
+        <option value="lollipops">
+            Red Lollipops
+        </option>
+    </select>
+</body>
 </html>
