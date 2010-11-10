@@ -53,8 +53,7 @@
                 settings.onChange.call($this);
             }).bind('click.rock', function () {
                 $(this).toggleClass('open');
-            });
-            $('body').append(ul);
+            }).insertAfter($this);
         });
     };
 })(jQuery);
