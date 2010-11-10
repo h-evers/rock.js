@@ -3,6 +3,7 @@
     $.fn.rocks = function (options) {
         var settings = {
             optionClass: 'option',
+            optionsClass: 'options',
             optClass: 'opt',
             onChange: function () {}
         };
@@ -54,6 +55,12 @@
             }).bind('click.rock', function () {
                 $(this).toggleClass('open');
             }).insertAfter($this);
+
+            $this.bind('change',function(e){
+               $this = $(this);
+               ul.find('span.handle').text($this.find('option[value='+$this.val()+']').text());
+            });
+
         });
     };
 })(jQuery);
