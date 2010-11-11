@@ -12,9 +12,10 @@
                 return $('<li />', {
                     'class': settings.optionClass
 
+
                 }).append($('<button />',{
                      text: $(element).text()
-                }));
+                }).data('val', $(element).val()));
             }
         };
         return this.each(function () {
@@ -43,12 +44,12 @@
                     })));
                     var ululul = $('<ul />');
                     $(this).children().each(function () {
-                        methods.buildLi(this).data('val', $(this).val()).appendTo(ululul);
+                        methods.buildLi(this).appendTo(ululul);
                     });
                     ulul.find('li.' + settings.optClass + ':last').append(ululul);
                 }
                 else {
-                    methods.buildLi(this).data('val', $(this).val()).appendTo(ulul);
+                    methods.buildLi(this).appendTo(ulul);
                 }
                 ul.append(ulul);
             });
