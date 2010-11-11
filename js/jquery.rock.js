@@ -26,9 +26,11 @@
                 'class': 'rockdown'
             });
             $('<li />').append($('<span />', {
-                'class': 'handle',
-                text: $this.find(':selected').text()
-            })).appendTo(ul);
+                'class': 'handle'
+
+            }).append($('<button />',{
+                     text: $this.find(':selected').text()
+                }))).appendTo(ul);
             var ulul = $('<ul />', {
                 'class': settings.optionClass
             });
@@ -50,9 +52,9 @@
                 }
                 ul.append(ulul);
             });
-            ul.delegate('li.option', 'click.rock', function (e) {
+            ul.delegate('li.option button', 'click.rock', function (e) {
                 $this.val($(e.target).data('val'));
-                ul.find('span.handle').text($(e.target).text());
+                ul.find('span.handle button').text($(e.target).text());
                 settings.onChange.call($this);
             }).bind('click.rock', function () {
                 $(this).toggleClass('open');
