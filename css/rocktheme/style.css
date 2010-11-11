@@ -1,51 +1,47 @@
-body {
-	background: #f4f3ef;
-	margin: 50px 0 0 50px;
-	font-family: "Trebuchet MS", Helvetica, Verdana, sans-serif;
-	font-size: 14px;
-}
-
-ul.rockdown,
-ul.rockdown * {
-	cursor: default;
-	margin: 0;
-	padding: 0;
-}
+/* == BASIC BOXES */
 
 ul.rockdown {
-	color: #eeeed7;
 	font-size: 13px;
-	margin: 30px 0;
 	width: 170px;
 }
 
-ul.rockdown span.handle {
-	-webkit-box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-	background: #cb4843 url(down.png) right 14px no-repeat;
-	display: block;
-	padding: 8px 0 8px 12px;
-}
-
-ul.rockdown.open span.handle {
-	-webkit-box-shadow: 1px 1px 5px rgba(0,0,0,0.4);
-}
-
-ul.rockdown ul.option {
+ul.rockdown ul.options {
 	background: #c57875;
 	padding: 5px 0;
 	position: absolute;
 	width: 170px;
 }
 
-ul.rockdown ul li {
-	text-indent: 16px;
-	padding: 5px 20px 5px 0;
+/* == BUTTONS */
+
+ul.rockdown button {
+	color: #eeeed7;
+	font-size: inherit;
+	font-family: inherit;
+	padding: 5px 20px 5px 16px;
+	text-align: left;
+	width: 100%;
 }
 
-ul.rockdown li.option:hover {
+ul.rockdown button.handle {
+	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
+	background: #cb4843 url(down.png) right 14px no-repeat;
+	display: block;
+	padding: 8px 32px 8px 16px;
+}
+
+ul.rockdown ul button:hover,
+ul.rockdown ul button:focus {
 	background: #ddbcba;
 	color: #7b675b;
+	outline: none;
 }
+
+ul.rockdown li.opt button {
+	padding-left: 32px;
+}
+
+/* == OPTGROUP */
 
 ul.rockdown li.opt {
 	padding: 5px 0 2px;
@@ -54,8 +50,5 @@ ul.rockdown li.opt {
 ul.rockdown li.opt span {
 	color: #e4e4d9;
 	font-style: italic;
-}
-
-ul.rockdown li.opt li {
-	text-indent: 32px;
+	padding-left: 16px;
 }

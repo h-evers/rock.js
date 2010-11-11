@@ -1,5 +1,12 @@
 /* basic & functional */
 
+ul.rockdown,
+ul.rockdown * {
+	cursor: default;
+	margin: 0;
+	padding: 0;
+}
+
 ul.rockdown li {
 	list-style: none;
 }
@@ -10,4 +17,9 @@ ul.rockdown ul {
 
 ul.rockdown.open ul {
 	display: block;
+}
+
+ul.rockdown button {
+	background: transparent;
+	border: 0;
 }

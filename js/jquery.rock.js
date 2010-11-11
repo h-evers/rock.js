@@ -21,18 +21,17 @@
             if (options) {
                 $.extend(settings, options);
             }
-            var $this = $(this).hide();
+            var $this = $(this);
             var ul = $('<ul />', {
                 'class': 'rockdown'
             });
-            $('<li />').append($('<span />', {
+            $('<li />').append($('<button />', {
+                text: $this.find(':selected').text(),
                 'class': 'handle'
 
-            }).append($('<button />',{
-                     text: $this.find(':selected').text()
-                }))).appendTo(ul);
+            })).appendTo(ul);
             var ulul = $('<ul />', {
-                'class': settings.optionClass
+                'class': settings.optionsClass
             });
             $this.children('option:not(:selected),optgroup').each(function () {
                 if ($(this).is('optgroup')) {
@@ -54,7 +53,7 @@
             });
             ul.delegate('li.option button', 'click.rock', function (e) {
                 $this.val($(e.target).data('val'));
-                ul.find('span.handle button').text($(e.target).text());
+                ul.find('button.handle').text($(e.target).text());
                 settings.onChange.call($this);
             }).bind('click.rock', function () {
                 $(this).toggleClass('open');
@@ -62,7 +61,7 @@
 
             $this.bind('change',function(){
                $this = $(this);
-               ul.find('span.handle').text($this.find('option[value='+$this.val()+']').text());
+               ul.find('button.handle').text($this.find('option[value='+$this.val()+']').text());
             });
 
         });
