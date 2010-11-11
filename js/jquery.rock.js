@@ -10,9 +10,11 @@
         var methods = {
             buildLi: function (element) {
                 return $('<li />', {
-                    'class': settings.optionClass,
-                    text: $(element).text()
-                });
+                    'class': settings.optionClass
+
+                }).append($('<button />',{
+                     text: $(element).text()
+                }));
             }
         };
         return this.each(function () {
@@ -56,7 +58,7 @@
                 $(this).toggleClass('open');
             }).insertAfter($this);
 
-            $this.bind('change',function(e){
+            $this.bind('change',function(){
                $this = $(this);
                ul.find('span.handle').text($this.find('option[value='+$this.val()+']').text());
             });
