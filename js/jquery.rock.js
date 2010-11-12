@@ -13,9 +13,28 @@
                     'class': settings.optionClass
 
 
-                }).append($('<button />',{
-                     text: $(element).text()
+                }).append($('<button />', {
+                    text: $(element).text()
                 }).data('val', $(element).val()));
+            },
+            close: function ($rock) {
+
+                $rock.removeClass('open');
+                $('body').unbind('click.rock');
+            },
+            open: function ($rock) {
+
+                $rock.addClass('open');
+                $('body').unbind('click.rock').bind({
+                    'click.rock': function () {
+                        methods.close($rock);
+                    },
+                    'keyup': function (e) {
+                        if (e.keyCode == 27) {
+                            methods.close($rock);
+                        }
+                    }
+                });
             }
         };
         return this.each(function () {
@@ -23,6 +42,7 @@
                 $.extend(settings, options);
             }
             var $this = $(this);
+            var $rock = null;
             var ul = $('<ul />', {
                 'class': 'rockdown'
             });
@@ -30,7 +50,18 @@
                 text: $this.find(':selected').text(),
                 'class': 'handle'
 
+            }).bind('click.rock', function (e) {
+                e.stopPropagation();
+                if ($rock.hasClass('open')) {
+                    methods.close($rock);
+                }
+                else {
+                    methods.open($rock);
+                }
+
+
             })).appendTo(ul);
+
             var ulul = $('<ul />', {
                 'class': settings.optionsClass
             });
@@ -52,18 +83,17 @@
                 }
                 ul.append(ulul);
             });
-            ul.delegate('li.option button', 'click.rock', function (e) {
+            $rock = ul.delegate('li.option button', 'click.rock', function (e) {
                 $this.val($(e.target).data('val'));
                 ul.find('button.handle').text($(e.target).text());
                 settings.onChange.call($this);
-            }).bind('click.rock', function () {
-                $(this).toggleClass('open');
             }).insertAfter($this);
 
-            $this.bind('change',function(){
-               $this = $(this);
-               ul.find('button.handle').text($this.find('option[value='+$this.val()+']').text());
+            $this.bind('change', function () {
+                $this = $(this);
+                ul.find('button.handle').text($this.find('option[value=' + $this.val() + ']').text());
             });
+
 
         });
     };
