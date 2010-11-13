@@ -51,7 +51,7 @@
                 text: $this.find(':selected').text(),
                 'class': 'handle'
 
-            }).bind('click.rock', function (e) {
+            }).bind({'click.rock': function (e) {
                 e.stopPropagation();
                 if ($rock.hasClass('open')) {
                     methods.close($rock);
@@ -61,6 +61,14 @@
                 }
 
 
+                },
+                keyup:function(e){
+                    console.log(e.keyCode);
+
+                    if (e.keyCode == 40) {
+                                       console.log('Fcccff');
+            }
+                }
             })).appendTo(ul);
 
             var ulul = $('<ul />', {
