@@ -20,12 +20,12 @@
             close: function ($rock) {
 
                 $rock.removeClass('open');
-                $('body').unbind('click.rock');
+                $('html').unbind('click.rock');
             },
             open: function ($rock) {
 
                 $rock.addClass('open');
-                $('body').unbind('click.rock').bind({
+                $('html').one({
                     'click.rock': function () {
                         methods.close($rock);
                     },
@@ -38,6 +38,7 @@
             }
         };
         return this.each(function () {
+
             if (options) {
                 $.extend(settings, options);
             }
@@ -85,7 +86,9 @@
             });
             $rock = ul.delegate('li.option button', 'click.rock', function (e) {
                 $this.val($(e.target).data('val'));
+
                 ul.find('button.handle').text($(e.target).text());
+                methods.close($rock);
                 settings.onChange.call($this);
             }).insertAfter($this);
 
