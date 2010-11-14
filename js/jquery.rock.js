@@ -51,23 +51,22 @@
                 text: $this.find(':selected').text(),
                 'class': 'handle'
 
-            }).bind({'click.rock': function (e) {
-                e.stopPropagation();
-                if ($rock.hasClass('open')) {
-                    methods.close($rock);
-                }
-                else {
-                    methods.open($rock);
-                }
+            }).bind({
+                'click.rock': function (e) {
+                    e.stopPropagation();
+                    if ($rock.hasClass('open')) {
+                        methods.close($rock);
+                    }
+                    else {
+                        methods.open($rock);
+                    }
 
 
                 },
-                keyup:function(e){
-                    console.log(e.keyCode);
-
+                keyup: function (e) {
                     if (e.keyCode == 40) {
-                                       console.log('Fcccff');
-            }
+                        $(this).parent().next().find('.option').first().find('button').focus();
+                    }
                 }
             })).appendTo(ul);
 
@@ -90,14 +89,30 @@
                 else {
                     methods.buildLi(this).appendTo(ulul);
                 }
-                ul.append(ulul);
             });
+            ul.append($('<li />').append(ulul));
             $rock = ul.delegate('li.option button', 'click.rock', function (e) {
                 $this.val($(e.target).data('val'));
 
                 ul.find('button.handle').text($(e.target).text());
                 methods.close($rock);
                 settings.onChange.call($this);
+            }).delegate('li.option button', 'keyup', function (e) {
+                if (e.keyCode === 40) {
+                    var $buttons = $rock.find('button');
+                    $buttons.each(function (index, value) {
+                        if (e.target === value) {
+                            try {
+                                $buttons.get(index + 1).focus();
+                            }
+                            catch (e) {
+                                $buttons.get(0).focus();
+                            }
+                        }
+                    })
+
+                }
+
             }).insertAfter($this);
 
             $this.bind('change', function () {
