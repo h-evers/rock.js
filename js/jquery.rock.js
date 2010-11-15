@@ -18,15 +18,18 @@
 				}).data('val', $(element).val()));
 			},
 			close: function ($rock) {
-				$rock.removeClass(settings.openClass);
+				$rock.element.removeClass(settings.openClass);
+                $rock.open = false;
 				$('html').unbind('click.rock');
 			},
 			open: function ($rock) {
 				$.each(rocks,function(){
-                   this.removeClass(settings.openClass);
+                   this.element.removeClass(settings.openClass);
+                   this.open = false;
                 });
 
-                $rock.addClass(settings.openClass);
+                $rock.element.addClass(settings.openClass);
+                $rock.open = true;
 				$('html').one({
 					'click.rock': function () {
 						methods.close($rock);
@@ -51,7 +54,7 @@
                 return;
             }
 
-			var $rock = null;
+			var $rock = {};
 			var ul = $('<ul />', {
 				'class': 'rockdown'
 			});
@@ -61,7 +64,7 @@
 			}).bind({
 				'click.rock': function (e) {
 					e.stopPropagation();
-					if ($rock.hasClass('open')) {
+					if ($rock.open) {
 						methods.close($rock);
 					}
 					else {
@@ -70,8 +73,13 @@
 				},
 				keyup: function (e) {
 					if (e.keyCode == 40) {
-						methods.open($rock);
-						//$(this).parent().next().find('.option').first().find('button').focus();
+						if(!$rock.open){
+                            methods.open($rock);
+                        }
+                        else {
+                            $rock.element.find('li.option:first button').focus();    
+                        }
+
 					}
 				}
 			})).appendTo(ul);
@@ -96,14 +104,15 @@
 				}
 			});
 			ul.append($('<li />').append(ulul));
-			$rock = ul.delegate('li.option button', 'click.rock', function (e) {
+			$rock.element = ul.delegate('li.option button', 'click.rock', function (e) {
 				$this.val($(e.target).data('val'));
 				ul.find('button.handle').text($(e.target).text());
 				methods.close($rock);
 				//callback
                 settings.onChange.call($this);
 			}).delegate('li.option button', 'keyup', function (e) {
-				var $buttons = $rock.find('button');
+				var $buttons = $rock.element.find('button');
+                // arrow down
                 if (e.keyCode === 40) {
 					$buttons.each(function (index, value) {
 						if (e.target === value) {
@@ -113,6 +122,7 @@
 						}
 					});
 				}
+                //arrow up
 				if (e.keyCode === 38) {
 					$buttons.each(function (index, value) {
 						if (e.target === value) {
