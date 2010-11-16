@@ -2,20 +2,34 @@
 
 ul.rockdown {
 	font-size: 13px;
-	width: 170px;
+	width: 180px;
 }
 
 ul.rockdown ul.options {
-	background: #c57875;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
+	background: rgba(255,255,255,0.97);
+	border: 1px #ccc solid;
 	padding: 5px 0;
 	position: absolute;
-	width: 170px;
+	max-height: 250px;
+	overflow: auto;
+	width: 178px;
+}
+
+ul.rockdown ul.options::-webkit-scrollbar {
+    width: 5px;
+    height: 13px;
+}
+
+ul.rockdown ul.options::-webkit-scrollbar-thumb {
+	background: #777;
+	-webkit-border-radius: 3px;
 }
 
 /* == BUTTONS */
 
 ul.rockdown button {
-	color: #eeeed7;
+	color: #333;
 	font-size: inherit;
 	font-family: inherit;
 	padding: 5px 20px 5px 16px;
@@ -25,15 +39,17 @@ ul.rockdown button {
 
 ul.rockdown button.handle {
 	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
-	background: #cb4843 url(down.png) right 14px no-repeat;
+	-moz-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
+	background: #b22823 url(down.png) right center no-repeat;
+	color: #fff;
 	display: block;
-	padding: 8px 32px 8px 16px;
+	padding: 7px 32px 7px 11px;
 }
 
 ul.rockdown ul button:hover,
 ul.rockdown ul button:focus {
-	background: #ddbcba;
-	color: #7b675b;
+	background: #b22823;
+	color: #fff;
 	outline: none;
 }
 
@@ -48,7 +64,7 @@ ul.rockdown li.opt {
 }
 
 ul.rockdown li.opt span {
-	color: #e4e4d9;
+	color: #ccc;
 	font-style: italic;
 	padding-left: 16px;
 }
