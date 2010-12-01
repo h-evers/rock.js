@@ -7,15 +7,20 @@ ul.rockdown {
 
 ul.rockdown ul.options {
 	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
+	padding: 5px 0;
+	width: 178px;
 	background: rgba(255,255,255,0.97);
 	border: 1px #ccc solid;
-	padding: 5px 0;
+	overflow: auto;
 	position: absolute;
 	max-height: 250px;
-	overflow: auto;
-	width: 178px;
 }
 
+ul.rockdown div.scrollBox {
+	
+}
+
+/*
 ul.rockdown ul.options::-webkit-scrollbar {
     width: 5px;
     height: 13px;
@@ -25,6 +30,7 @@ ul.rockdown ul.options::-webkit-scrollbar-thumb {
 	background: #777;
 	-webkit-border-radius: 3px;
 }
+*/
 
 /* == BUTTONS */
 
@@ -46,11 +52,14 @@ ul.rockdown button.handle {
 	padding: 7px 32px 7px 11px;
 }
 
-ul.rockdown ul button:hover,
 ul.rockdown ul button:focus {
 	background: #b22823;
 	color: #fff;
 	outline: none;
+}
+
+ul.rockdown ul button:active {
+	background: #d24843;
 }
 
 ul.rockdown li.opt button {
