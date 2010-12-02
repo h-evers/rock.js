@@ -50,6 +50,10 @@ ul.rockdown button.handle {
 	padding: 7px 32px 7px 11px;
 }
 
+ul.rockdown button.handle:focus {
+	background: #c23833 url(down.png) right center no-repeat;
+}
+
 ul.rockdown ul button:focus {
 	background: #b22823;
 	color: #fff;
