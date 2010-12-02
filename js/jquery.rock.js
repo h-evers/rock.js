@@ -1,7 +1,8 @@
 // jquery plugin
 (function ($) {
 	$.fn.rocks = function (options) {
-		var settings = {
+		var enter = '';
+        var settings = {
 			optionClass: 'option',
 			optionsClass: 'options',
 			optClass: 'opt',
@@ -153,6 +154,24 @@
 			}).delegate('li.option button', 'keydown.rock', function (e) {
 				// Holt alle in dem Rockdown verbauten Buttons zur späteren Verwendung
 				var $buttons = $rock.element.find('button');
+                if(e.keyCode>=49 && e.keyCode<90){
+                    e.preventDefault();  
+                    enter = enter+String.fromCharCode(e.keyCode);
+                                        //console.log($buttons.find(":contains('E')"));
+                    $buttons.each(function(){
+                        if($(this).text().indexOf(enter) === 0){
+                                $(this).focus();
+                                enter = '';
+                                return false;
+                        }
+                        else {
+                            //console.log('ffff');
+                        }
+                    });
+                    //$buttons.find(':contains("E")').focus();
+
+                }
+
                 // Bei Taste-nach-unten...
                 if (e.keyCode === 40 || e.keyCode === 38) {
 					e.preventDefault();
