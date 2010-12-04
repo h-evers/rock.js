@@ -48,6 +48,7 @@ ul.rockdown button.handle {
 	color: #fff;
 	display: block;
 	padding: 7px 32px 7px 11px;
+/*	overflow: hidden; white-space: nowrap; text-overflow: ellipsis; */
 }
 
 ul.rockdown button.handle:focus {

@@ -15,7 +15,8 @@
 			// Baut Listenpunkte (options) zusammen
 			buildLi: function (element) {
 				return $('<li />', {
-					'class': settings.optionClass
+					'class': settings.optionClass,
+					'role': 'option'
 				}).append($('<button />', {
 					text: $(element).text()
 				}).data('val', $(element).val()));
@@ -72,9 +73,11 @@
 				'class': 'rockdown'
 			});
 			// Baut handle zusammen (der Teil, der im geschlossenen Zustand zu sehen ist)
+			var $handleValue = $this.find(':selected').text();
 			$('<li />').append($('<button />', {
-				text: $this.find(':selected').text(),
-				'class': 'handle'
+				text: $handleValue,
+				'class': 'handle',
+				'aria-valuetext': $handleValue
 			// Bindet öffnen und schließen
 			}).bind({
 				'click.rock': function (e) {
@@ -141,7 +144,7 @@
 				// Holt sich den Value des geklickten Elements
 				$this.val($(e.target).data('val'));
 				// Ändert Label auf gewählte Option
-				ul.find('button.handle').text($(e.target).text());
+				ul.find('button.handle').text($(e.target).text()).attr('aria-valuetext', $(e.target).text());
 				// Schließt das rockdown nach Auswahl
 				methods.close($rock);
 				// Feuert vom Dev gesetzten Callback ab
