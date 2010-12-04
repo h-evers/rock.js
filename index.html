@@ -22,6 +22,8 @@
 	<select name="country" id="country">
 		<option value="" selected="selected">Auswählen</option>
 		<option value="af">Afghanistan</option>
+        <option value="af2">Afghanistan</option>
+        <option value="af3">Afghanistan</option>
 		<option value="eg">Ägypten</option>
 		<option value="al">Albanien</option>
 		<option value="dz">Algerien</option>
@@ -277,6 +279,9 @@
     <script type="text/javascript">
     $(document).ready(function () {
     	$('select,.rocks_not').rocks();
+
+        // chainable test
+        $('p').rocks().css('color','#f09');
     });
     </script>
 </body>

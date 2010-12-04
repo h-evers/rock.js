@@ -1,7 +1,8 @@
 // jquery plugin
 (function ($) {
 	$.fn.rocks = function (options) {
-		var settings = {
+		var enter = '';
+        var settings = {
 			optionClass: 'option',
 			optionsClass: 'options',
 			optClass: 'opt',
@@ -25,11 +26,12 @@
 			close: function ($rock) {
 				$rock.element.removeClass(settings.openClass);
                 $rock.open = false;
-				$('html').unbind('click.rock');
+				$(document).unbind('click.rock').unbind('keyup.rock');
 			},
 			// Schließt alle Rockdowns und öffnet das übergebene
 			open: function ($rock) {
-				$.each(rocks,function(){
+                $(document).unbind('click.rock').unbind('keyup.rock');
+                $.each(rocks,function(){
                    this.element.removeClass(settings.openClass);
                    this.open = false;
                 });
@@ -37,12 +39,12 @@
                 $rock.element.addClass(settings.openClass);
                 $rock.open = true;
 				// Einmaliges, delegiertes Event zum schließen bei click in document oder esc
-				$(document).one({
+                $(document).bind({
 					'click.rock': function () {
 						methods.close($rock);
 					},
-					'keyup': function (e) {
-						if (e.keyCode == 27) {
+					'keyup.rock': function (e) {
+                        if (e.keyCode == 27) {
 							methods.close($rock);
 						}
 					}
@@ -62,8 +64,9 @@
 			// Kann später als Elementweiche benutzt werden
 			// Object dürfte dadurch nicht mehr chainable sein
             if(!$this.is('select')){
-                return;
+                return (jQuery);
             }
+
 			
 			// $rock enthält Element ($this) und Zustand (z.B. open)
 			// Hat noch Platz für mehr ;-)
@@ -93,7 +96,7 @@
 					}
 				},
 				// Bindet keyup an das handle zum öffnen mit 'pfeil unten' 
-				keyup: function (e) {
+				'keyup.rock': function (e) {
 					if (e.keyCode == 40) {
 						// Springt auf die erste Option in der Liste
                         if(!$rock.open) {
@@ -142,7 +145,8 @@
 			// Wirft rockdown ul in $rock.element
 			$rock.element = ul.delegate('li.option button', 'click.rock', function (e) {
 				// Holt sich den Value des geklickten Elements
-				$this.val($(e.target).data('val'));
+				console.log($(e.target).data('val'));
+                $this.val($(e.target).data('val'));
 				// Ändert Label auf gewählte Option
 				ul.find('button.handle').text($(e.target).text()).attr('aria-valuetext', $(e.target).text());
 				// Schließt das rockdown nach Auswahl
@@ -150,14 +154,30 @@
 				// Feuert vom Dev gesetzten Callback ab
                 settings.onChange.call($this);
 			// Gleicher Button, anders Event: keyup
-			}).delegate('li.option button', 'keydown', function (e) {
+			}).delegate('li.option button', 'keydown.rock', function (e) {
 				// Holt alle in dem Rockdown verbauten Buttons zur späteren Verwendung
 				var $buttons = $rock.element.find('button');
+                if(e.keyCode>=49 && e.keyCode<90){
+                    e.preventDefault();  
+                    enter = enter+String.fromCharCode(e.keyCode);
+                                        //console.log($buttons.find(":contains('E')"));
+                    $buttons.each(function(){
+                        if($(this).text().indexOf(enter) === 0){
+                                $(this).focus();
+                                enter = '';
+                                return false;
+                        }
+                        else {
+                            //console.log('ffff');
+                        }
+                    });
+                    //$buttons.find(':contains("E")').focus();
+
+                }
+
                 // Bei Taste-nach-unten...
                 if (e.keyCode === 40 || e.keyCode === 38) {
-					e.preventDefault();			
-					var scrollPos = ulul.scrollTop();
-					console.log('before: ' + scrollPos);
+					e.preventDefault();
 					// Geht alle Buttons durch
 					$buttons.each(function (index, value) {
 						// Wenn wir uns auf dem Button befinden
@@ -180,7 +200,6 @@
 							}							
 						}
 					});
-					console.log('after: ' + scrollPos);
 				}
 			// Wirft rockdown hinter origin dropdown
 			}).delegate('li.' + settings.optionClass, 'mouseover', function(){
@@ -192,7 +211,8 @@
 				ul.find('button.handle').text($this.find('option[value=' + $this.val() + ']').text());
 			});
 		// Wirft das Ganze ins Stack
-		rocks.push($rock); 
+		rocks.push($rock);
+        
         });
 	};
 })(jQuery);
