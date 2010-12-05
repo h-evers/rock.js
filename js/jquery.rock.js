@@ -15,12 +15,13 @@
 		var methods = {
 			// Baut Listenpunkte (options) zusammen
 			buildLi: function (element) {
-				return $('<li />', {
+				var $element = $(element);
+                return $('<li />', {
 					'class': settings.optionClass,
 					'role': 'option'
 				}).append($('<button />', {
-					text: $(element).text()
-				}).data('val', $(element).val()));
+					text: $element.text()
+				}).data('val', $element.val()));
 			},
 			// Schließt einzelnes Rockdown
 			close: function ($rock) {
@@ -75,12 +76,12 @@
 			var ul = $('<ul />', {
 				'class': 'rockdown'
 			});
-			// Baut handle zusammen (der Teil, der im geschlossenen Zustand zu sehen ist)
-			var $handleValue = $this.find(':selected').text();
+            $rock.handleText = $this.find('option:selected').text();
+			// Baut handle zusammen (der Teil, der im geschlossenen Zustand zu sehen ist);
 			$('<li />').append($('<button />', {
-				text: $handleValue,
+				text: $rock.handleText,
 				'class': 'handle',
-				'aria-valuetext': $handleValue
+				'aria-valuetext': $rock.handleText
 			// Bindet öffnen und schließen
 			}).bind({
 				'click.rock': function (e) {
@@ -145,10 +146,10 @@
 			// Wirft rockdown ul in $rock.element
 			$rock.element = ul.delegate('li.option button', 'click.rock', function (e) {
 				// Holt sich den Value des geklickten Elements
-				console.log($(e.target).data('val'));
+                var $target = $(e.target);
                 $this.val($(e.target).data('val'));
 				// Ändert Label auf gewählte Option
-				ul.find('button.handle').text($(e.target).text()).attr('aria-valuetext', $(e.target).text());
+				ul.find('button.handle').text($target.text()).attr('aria-valuetext', $target.text());
 				// Schließt das rockdown nach Auswahl
 				methods.close($rock);
 				// Feuert vom Dev gesetzten Callback ab
@@ -160,18 +161,14 @@
                 if(e.keyCode>=49 && e.keyCode<90){
                     e.preventDefault();  
                     enter = enter+String.fromCharCode(e.keyCode);
-                                        //console.log($buttons.find(":contains('E')"));
                     $buttons.each(function(){
                         if($(this).text().indexOf(enter) === 0){
-                                $(this).focus();
+                                $(this).hover().focus();
+                                //console.log($(this).text());
                                 enter = '';
                                 return false;
-                        }
-                        else {
-                            //console.log('ffff');
-                        }
+                        } 
                     });
-                    //$buttons.find(':contains("E")').focus();
 
                 }
 
