@@ -7,6 +7,7 @@
 			optionsClass: 'options',
 			optClass: 'opt',
             openClass: 'open',
+            timeout: 2000,
 			onChange: function () {}
 		};
         var timeout = [];
@@ -176,7 +177,7 @@
                     });
                     var id = window.setTimeout(function(){
                         enter = '';
-                    }, 2500);
+                    }, settings.timeout);
 
                     timeout.push(id);
                     enter = enter+String.fromCharCode(e.keyCode);
