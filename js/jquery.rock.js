@@ -9,20 +9,26 @@
             openClass: 'open',
 			onChange: function () {}
 		};
+        var timeout = [];
 		// Stack, in dem alle Dropdowns liegen
         var rocks = [];
 		// Private Methoden
 		var methods = {
 			// Baut Listenpunkte (options) zusammen
-			buildLi: function (element) {
+			buildButton: function($element){
+                return $('<button />', {
+					text: $element.text()
+				}).data('val', $element.val());
+            },
+
+            buildLi: function (element) {
 				var $element = $(element);
                 return $('<li />', {
 					'class': settings.optionClass,
 					'role': 'option'
-				}).append($('<button />', {
-					text: $element.text()
-				}).data('val', $element.val()));
+				}).append(methods.buildButton($element));
 			},
+
 			// Schließt einzelnes Rockdown
 			close: function ($rock) {
 				$rock.element.removeClass(settings.openClass);
@@ -71,7 +77,7 @@
 			
 			// $rock enthält Element ($this) und Zustand (z.B. open)
 			// Hat noch Platz für mehr ;-)
-			var $rock = {};
+			var $rock = {'buttons':[]};
 			// Baut rockdown-ul auf, hängt noch nicht im DOM
 			var ul = $('<ul />', {
 				'class': 'rockdown'
@@ -141,6 +147,7 @@
 					methods.buildLi(this).appendTo(ulul);
 				}
 			});
+            $rock.buttons = ulul.find('li.'+settings.optionClass+' button');
 			// Hängt ul mit kompletter Liste aller Optionen und Optgroups in das rockdown ul
 			ul.append($('<li />').append(ulul));
 			// Wirft rockdown ul in $rock.element
@@ -155,19 +162,33 @@
 				// Feuert vom Dev gesetzten Callback ab
                 settings.onChange.call($this);
 			// Gleicher Button, anders Event: keyup
-			}).delegate('li.option button', 'keydown.rock', function (e) {
-				// Holt alle in dem Rockdown verbauten Buttons zur späteren Verwendung
-				var $buttons = $rock.element.find('button');
-                if(e.keyCode>=49 && e.keyCode<90){
-                    e.preventDefault();  
+			}).delegate('li.option button,.handle', 'keydown.rock', function (e) {
+                // Holt alle in dem Rockdown verbauten Buttons zur späteren Verwendung
+				
+             
+                if(e.keyCode>=49 && e.keyCode<=90){
+                    e.preventDefault();
+
+                    //clear all timeouts
+                    $.each(timeout,function(){
+                        window.clearTimeout(this);
+                    });
+                    var id = window.setTimeout(function(){
+                        enter = '';
+                    }, 2500);
+
+                    timeout.push(id);
                     enter = enter+String.fromCharCode(e.keyCode);
-                    $buttons.each(function(){
-                        if($(this).text().indexOf(enter) === 0){
+                    $rock.buttons.each(function(index,value){
+                        //found!
+                        if($(this).text().toLowerCase().indexOf(enter.toLowerCase()) === 0){
                                 $(this).hover().focus();
-                                //console.log($(this).text());
-                                enter = '';
                                 return false;
-                        } 
+                        }
+                        // nothing found
+                        if(index===$rock.buttons.length-1){
+                            enter = '';
+                        }
                     });
 
                 }
@@ -176,23 +197,23 @@
                 if (e.keyCode === 40 || e.keyCode === 38) {
 					e.preventDefault();
 					// Geht alle Buttons durch
-					$buttons.each(function (index, value) {
+					$rock.buttons.each(function (index, value) {
 						// Wenn wir uns auf dem Button befinden
 						if (e.target === value) {
 							if (e.keyCode === 40) {
 								// Wenn aktueller Button nicht der letzte ist
-								if (index + 1 < $buttons.length) {
+								if (index + 1 < $rock.buttons.length) {
 									// Fokussiert den nächsten Button in der Liste
 									e.preventDefault();
-									$buttons.get(index + 1).focus();
+									$rock.buttons.get(index + 1).focus();
 								}							
 							}
 							else {
 								// Wenn aktueller Button nicht der erste ist
-								if (index - 1 > 0) {
+								if (index > 0) {
 									// Fokussiert den vorherigen Button in der Liste
 									e.preventDefault();
-									$buttons.get(index - 1).focus();
+									$rock.buttons.get(index-1).focus();
 								}
 							}							
 						}
