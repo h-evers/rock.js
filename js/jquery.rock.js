@@ -60,10 +60,6 @@
 		};
 		// Wird für jedes übergebene Element (rocks) ausgeführt
 		return this.each(function () {
-			// Überschreibt options falls angegeben
-            if (options) {
-				$.extend(settings, options);
-			}
 			// Speichert aktuelles jQuery-Objekt in $this
 			var $this = $(this);
 
@@ -73,6 +69,11 @@
             if(!$this.is('select')){
                 return (jQuery);
             }
+
+            // Überschreibt options falls angegeben
+            if (options) {
+				$.extend(settings, options);
+			}
 
 			
 			// $rock enthält Element ($this) und Zustand (z.B. open)
