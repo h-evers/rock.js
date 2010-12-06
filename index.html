@@ -271,6 +271,10 @@
             <option value="alive-frogs">Alive</option>
         </optgroup>
         <option value="lady">A pink lady</option>
+		<optgroup label="Green frogs">
+            <option value="dead-frogs">Dead</option>
+            <option value="alive-frogs">Alive</option>
+        </optgroup>
         <option value="lollipops">Red Lollipops</option>
     </select>
     <div class="rocks_not">bla bla</div>
@@ -282,11 +286,7 @@
         $ = null;
         jQuery(document).ready(function ($) {
     	    $('select,.rocks_not').rocks();
-
-            // chainable test
-            $('p').rocks().css('color','#f09');
-        
-    });
+		});
     </script>
 </body>
 </html>

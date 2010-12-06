@@ -7,7 +7,7 @@
 			optionsClass: 'options',
 			optClass: 'opt',
             openClass: 'open',
-            timeout: 2000,
+            timeout: 1000,
 			onChange: function () {}
 		};
         var timeout = [];
@@ -167,7 +167,6 @@
 			}).delegate('li.option button,.handle', 'keydown.rock', function (e) {
                 // Holt alle in dem Rockdown verbauten Buttons zur späteren Verwendung
 				
-             
                 if(e.keyCode>=49 && e.keyCode<=90){
                     e.preventDefault();
 
@@ -185,6 +184,10 @@
                         //found!
                         if($(this).text().toLowerCase().indexOf(enter.toLowerCase()) === 0){
                                 $(this).hover().focus();
+								if(!$rock.open) {
+									console.log('enter');
+									$(this).trigger('click.rock');
+								};
                                 return false;
                         }
                         // nothing found

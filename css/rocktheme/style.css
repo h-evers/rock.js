@@ -9,6 +9,7 @@ ul.rockdown ul.options {
 	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
 	padding: 5px 0;
 	width: 178px;
+	background: #fff;
 	background: rgba(255,255,255,0.97);
 	border: 1px #ccc solid;
 	overflow: auto;
