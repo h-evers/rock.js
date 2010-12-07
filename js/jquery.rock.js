@@ -209,8 +209,7 @@
                         window.clearTimeout(this);
                     });
                     var id = window.setTimeout(function(){
-                        enter = '';
-                        $rock.$last = null;
+                       enter = '';
                     }, settings.timeout);
 
                     timeout.push(id);
@@ -230,11 +229,7 @@
 
                         }
                         // nothing found
-                        if(index===$rock.buttons.length-1){
-                           if($rock.last){
-                               $rockl.$last.hover().focus();
-                           }
-                        }
+
                     });
 			// Wirft rockdown hinter origin dropdown
 			}).delegate('li.' + settings.optionClass, 'mouseover', function(){
