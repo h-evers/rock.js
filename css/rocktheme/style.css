@@ -57,6 +57,7 @@ body.rjsmo select {
 	-webkit-appearance: none;
 	-webkit-border-radius: 0;
 	border: 0;
+	width: 180px;
 }
 
 ul.rockdown button.handle:focus {
