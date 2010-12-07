@@ -63,7 +63,7 @@
 		// Wird für jedes übergebene Element (rocks) ausgeführt
 		return this.each(function () {
 			// Speichert aktuelles jQuery-Objekt in $this
-			var $this = $(this);
+			var $this = $(this).hide();
 
             // Steigt aus, ob es sich überhaupt um ein select handelt
 			// Kann später als Elementweiche benutzt werden
