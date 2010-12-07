@@ -7,6 +7,7 @@
 			optionsClass: 'options',
 			optClass: 'opt',
             openClass: 'open',
+            mobileClass: 'rjsmo',
             timeout: 1000,
 			onChange: function () {}
 		};
@@ -68,6 +69,10 @@
 			// Kann später als Elementweiche benutzt werden
 			// Object dürfte dadurch nicht mehr chainable sein
             if(!$this.is('select')){
+                return (jQuery);
+            }
+            if(navigator.userAgent.toLowerCase().match(/(iphone|android)/)) {
+                $('body').addClass(settings.mobileClass);
                 return (jQuery);
             }
 
@@ -187,7 +192,7 @@
 								if(!$rock.open) {
 									console.log('enter');
 									$(this).trigger('click.rock');
-								};
+								}
                                 return false;
                         }
                         // nothing found
