@@ -42,7 +42,8 @@ ul.rockdown button::-moz-focus-inner {
 	border: 0;
 }
 
-ul.rockdown button.handle {
+ul.rockdown button.handle,
+body.rjsmo select {
 	-webkit-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
 	-moz-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
 	background: #b22823 url(down.png) right center no-repeat;
@@ -50,6 +51,12 @@ ul.rockdown button.handle {
 	display: block;
 	padding: 7px 32px 7px 11px;
 /*	overflow: hidden; white-space: nowrap; text-overflow: ellipsis; */
+}
+
+body.rjsmo select {
+	-webkit-appearance: none;
+	-webkit-border-radius: 0;
+	border: 0;
 }
 
 ul.rockdown button.handle:focus {
