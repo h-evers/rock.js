@@ -236,7 +236,7 @@
 			// Übernimmt Änderungen am origin dropdown ins rockdown
 			$this.bind('change', function () {
 				$this = $(this);
-				ul.find('button.handle').text($this.find('option[value=' + $this.val() + ']').text());
+				ul.find('button.handle').text($this.find('option[value=' + $this.val() + ']').first().text());
 			});
 		// Wirft das Ganze ins Stack
 		rocks.push($rock);
