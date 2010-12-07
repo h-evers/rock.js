@@ -172,36 +172,11 @@
 			}).delegate('li.option button,.handle', 'keydown.rock', function (e) {
                 // Holt alle in dem Rockdown verbauten Buttons zur späteren Verwendung
 				
-                if(e.keyCode>=49 && e.keyCode<=90){
-                    e.preventDefault();
 
-                    //clear all timeouts
-                    $.each(timeout,function(){
-                        window.clearTimeout(this);
-                    });
-                    var id = window.setTimeout(function(){
-                        enter = '';
-                    }, settings.timeout);
 
-                    timeout.push(id);
-                    enter = enter+String.fromCharCode(e.keyCode);
-                    $rock.buttons.each(function(index,value){
-                        //found!
-                        if($(this).text().toLowerCase().indexOf(enter.toLowerCase()) === 0){
-                                $(this).hover().focus();
-								if(!$rock.open) {
-									console.log('enter');
-									$(this).trigger('click.rock');
-								}
-                                return false;
-                        }
-                        // nothing found
-                        if(index===$rock.buttons.length-1){
-                            enter = '';
-                        }
-                    });
 
-                }
+
+
 
                 // Bei Taste-nach-unten...
                 if (e.keyCode === 40 || e.keyCode === 38) {
@@ -229,6 +204,31 @@
 						}
 					});
 				}
+                //clear all timeouts
+                    $.each(timeout,function(){
+                        window.clearTimeout(this);
+                    });
+                    var id = window.setTimeout(function(){
+                        enter = '';
+                    }, settings.timeout);
+
+                    timeout.push(id);
+                    enter = enter+String.fromCharCode(e.keyCode);
+                    $rock.buttons.each(function(index,value){
+                        //found!
+                        if($(this).text().toLowerCase().indexOf(enter.toLowerCase()) === 0){
+                                $(this).hover().focus();
+								if(!$rock.open) {
+									console.log('enter');
+									$(this).trigger('click.rock');
+								}
+                                return false;
+                        }
+                        // nothing found
+                        if(index===$rock.buttons.length-1){
+                            enter = '';
+                        }
+                    });
 			// Wirft rockdown hinter origin dropdown
 			}).delegate('li.' + settings.optionClass, 'mouseover', function(){
 				$(this).find('button').focus();
