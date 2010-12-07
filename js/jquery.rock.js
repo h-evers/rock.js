@@ -210,23 +210,30 @@
                     });
                     var id = window.setTimeout(function(){
                         enter = '';
+                        $rock.$last = null;
                     }, settings.timeout);
 
                     timeout.push(id);
                     enter = enter+String.fromCharCode(e.keyCode);
                     $rock.buttons.each(function(index,value){
-                        //found!
-                        if($(this).text().toLowerCase().indexOf(enter.toLowerCase()) === 0){
-                                $(this).hover().focus();
+                        var $this = $(this);
+                        $rock.$last = $this;                        
+                        if($this.text().toLowerCase().indexOf(enter.toLowerCase()) === 0){
+
 								if(!$rock.open) {
-									console.log('enter');
-									$(this).trigger('click.rock');
+
+									$this.trigger('click.rock');
 								}
-                                return false;
+                                else {
+                                        $this.hover().focus();
+                                }
+
                         }
                         // nothing found
                         if(index===$rock.buttons.length-1){
-                            enter = '';
+                           if($rock.last){
+                               $rockl.$last.hover().focus();
+                           }
                         }
                     });
 			// Wirft rockdown hinter origin dropdown
