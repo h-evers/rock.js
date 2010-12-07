@@ -172,36 +172,11 @@
 			}).delegate('li.option button,.handle', 'keydown.rock', function (e) {
                 // Holt alle in dem Rockdown verbauten Buttons zur späteren Verwendung
 				
-                if(e.keyCode>=49 && e.keyCode<=90){
-                    e.preventDefault();
 
-                    //clear all timeouts
-                    $.each(timeout,function(){
-                        window.clearTimeout(this);
-                    });
-                    var id = window.setTimeout(function(){
-                        enter = '';
-                    }, settings.timeout);
 
-                    timeout.push(id);
-                    enter = enter+String.fromCharCode(e.keyCode);
-                    $rock.buttons.each(function(index,value){
-                        //found!
-                        if($(this).text().toLowerCase().indexOf(enter.toLowerCase()) === 0){
-                                $(this).hover().focus();
-								if(!$rock.open) {
-									console.log('enter');
-									$(this).trigger('click.rock');
-								}
-                                return false;
-                        }
-                        // nothing found
-                        if(index===$rock.buttons.length-1){
-                            enter = '';
-                        }
-                    });
 
-                }
+
+
 
                 // Bei Taste-nach-unten...
                 if (e.keyCode === 40 || e.keyCode === 38) {
@@ -229,6 +204,38 @@
 						}
 					});
 				}
+                //clear all timeouts
+                    $.each(timeout,function(){
+                        window.clearTimeout(this);
+                    });
+                    var id = window.setTimeout(function(){
+                        enter = '';
+                        $rock.$last = null;
+                    }, settings.timeout);
+
+                    timeout.push(id);
+                    enter = enter+String.fromCharCode(e.keyCode);
+                    $rock.buttons.each(function(index,value){
+                        var $this = $(this);
+                        $rock.$last = $this;                        
+                        if($this.text().toLowerCase().indexOf(enter.toLowerCase()) === 0){
+
+								if(!$rock.open) {
+
+									$this.trigger('click.rock');
+								}
+                                else {
+                                        $this.hover().focus();
+                                }
+
+                        }
+                        // nothing found
+                        if(index===$rock.buttons.length-1){
+                           if($rock.last){
+                               $rockl.$last.hover().focus();
+                           }
+                        }
+                    });
 			// Wirft rockdown hinter origin dropdown
 			}).delegate('li.' + settings.optionClass, 'mouseover', function(){
 				$(this).find('button').focus();
@@ -236,7 +243,7 @@
 			// Übernimmt Änderungen am origin dropdown ins rockdown
 			$this.bind('change', function () {
 				$this = $(this);
-				ul.find('button.handle').text($this.find('option[value=' + $this.val() + ']').text());
+				ul.find('button.handle').text($this.find('option[value=' + $this.val() + ']').first().text());
 			});
 		// Wirft das Ganze ins Stack
 		rocks.push($rock);
