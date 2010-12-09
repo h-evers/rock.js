@@ -163,7 +163,7 @@
 				// Holt sich den Value des geklickten Elements
                 var $target = $(e.target);
 
-                console.log($target.parent().attr('data-value'));
+                
                 $this.val($target.parent().attr('data-value'));
 				// Ändert Label auf gewählte Option
 				ul.find('button.handle').text($target.text()).attr('aria-valuetext', $target.text());
