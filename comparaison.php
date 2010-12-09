@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/rock.css" type="text/css">
     <link rel="stylesheet" href="css/rocktheme/style.css" type="text/css">
     <link rel="stylesheet" href="css/comparaison/ufd/ufd-base.css" type="text/css">
+    <link rel="stylesheet" href="css/comparaison/uniform/uniform.default.css" type="text/css">
     <style type="text/css">
 		body {
 			background: #f4f3ef;
@@ -17,6 +18,14 @@
 		ul.rockdown, select {
 			margin: 20px;
 		}
+        table,td,th {
+            border:1px solid #ccc;
+            border-collapse:collapse;
+            padding:3px;
+        }
+        td {
+            text-align:right;
+        }
 	</style>
 </head>
 <body>
@@ -50,26 +59,32 @@ if($i%10===0 || $i==LOOPS){
 	<table>
         <thead>
         <tr>
-            <th><?php echo LOOPS;?> Rock.js</th><th><?php echo LOOPS;?> ufd</th><th><?php echo LOOPS;?> rock fast</th>
+            <th><?php echo LOOPS;?> Rock.js</th><th><?php echo LOOPS;?> ufd</th><th><?php echo LOOPS;?> uniform</th><th><?php echo LOOPS;?> rock fast</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>
-                <label for="rock">click</label>
+                <label for="rock">label</label>
                 <select id="rock" name="rock">
                 <?php echo $html;?>
             </select>
             </td>
 
             <td>
-                <label for="ufd">click</label>
+                <label for="ufd">label</label>
                 <select id="ufd" name="rock">
               <?php echo $html;?>
             </select></td>
 
             <td>
-                <label for="rock_fast">click</label>
+                <label for="uniform">label</label>
+                <select id="uniform" name="uniform">
+              <?php echo $html;?>
+            </select></td>
+
+            <td>
+                <label for="rock_fast">label</label>
                 <select id="rock_fast" name="rock">
                         <?php echo $html;?>
             </select>
@@ -77,18 +92,19 @@ if($i%10===0 || $i==LOOPS){
 
         </tr>
         <tr>
-            <td id="rock_result">0</td><td id="ufd_result">0</td><td id="rock_fast_result">0</td>
+            <td id="rock_result">0</td><td id="ufd_result">0</td><td id="uniform_result">0</td><td id="rock_fast_result">0</td>
         </tr>
         </tbody>
 
 	</table>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.rock.js"></script>
     <script type="text/javascript" src="js/jquery.rock_fast.js"></script>
     <script type="text/javascript" src="js/comparaison/uid/jquery-ui-1.8.js"></script>
     <script type="text/javascript" src="js/comparaison/uid/ui.core.js"></script>
     <script type="text/javascript" src="js/comparaison/uid/jquery.ui.ufd.min.js"></script>
+    <script type="text/javascript" src="js/comparaison/uniform/jquery.uniform.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function ($) {
             var start = (new Date).getTime();
@@ -106,6 +122,11 @@ if($i%10===0 || $i==LOOPS){
             $('#rock_fast').rock_fast();
             var diff = (new Date).getTime() - start;
             $('#rock_fast_result').text(diff+' ms');
+
+            var start = (new Date).getTime();
+            $('#uniform').uniform();
+            var diff = (new Date).getTime() - start;
+            $('#uniform_result').text(diff+' ms');
 
 
 
