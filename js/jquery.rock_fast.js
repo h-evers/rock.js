@@ -132,7 +132,7 @@
 				var $this = $(this);
                 if ($this.is('optgroup')) {
 					// Ul der Optgroup
-					html.push('<li class="'+settings.optClass+'"><span>'+$this.attr('label')+'</span></li>');
+					html.push('<li class="'+settings.optClass+'"><span>'+$this.attr('label')+'</span><ul>');
                     /*ulul.append($('<li />', {
 						'class': settings.optClass
 					// Hängt nicht klickbares Label der Optgroup an
@@ -145,6 +145,7 @@
 					$(this).children().each(function () {
 						html.push(methods.buildLi(this));
 					});
+                    html.push('</ul></li>');
 					// Hängt ul mit allen Options der Optgroup in die li des Optgroup-Containers
 					//ulul.find('li.' + settings.optClass + ':last').append(ululul);
 				}

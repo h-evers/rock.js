@@ -20,7 +20,7 @@
 	</style>
 </head>
 <body>
-<?php define('LOOPS',591);?>
+<?php define('LOOPS',21);?>
 
 <?php
 $html = '';
