@@ -114,7 +114,7 @@ if($i%10===0 || $i==LOOPS){
 
 
             var start = (new Date).getTime();
-            $('#rock').rocks();
+            $('#rock').rock();
             var diff = (new Date).getTime() - start;
             $('#rock_result').text(diff+' ms');
 
