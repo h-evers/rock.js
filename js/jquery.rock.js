@@ -1,6 +1,6 @@
 // jquery plugin
 (function ($) {
-	$.fn.rocks = function (options) {
+	$.fn.rock = function (options) {
 		var enter = '';
         var settings = {
 			optionClass: 'option',
