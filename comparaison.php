@@ -23,13 +23,23 @@
 <?php define('LOOPS',500);?>
 
 <?php
+
+function random_string(){
+    $str = '';
+    for ($i=0; $i<6; $i++) {
+        $d=rand(1,30)%2;
+        $str .= $d ? chr(rand(65,90)) : chr(rand(48,57));
+    }
+    return $str;
+}
+
 $html = '';
 for($i=1;$i<=LOOPS;$i++){
 
 if($i%10===1){
-    $html .= '<optgroup label="'.$i.'">'."\n";
+    $html .= '<optgroup label="'.random_string().'">'."\n";
     }
-              $html .= '<option value="value'.$i.'">option '.$i.'</option>'."\n";
+              $html .= '<option value="value'.random_string().'">'.random_string().'</option>'."\n";
 if($i%10===0 || $i==LOOPS){
         $html .= '</optgroup>'."\n";
     }

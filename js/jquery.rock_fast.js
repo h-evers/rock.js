@@ -2,7 +2,7 @@
 (function ($) {
 	$.fn.rock_fast = function (options) {
 		var enter = '';
-        html = [];
+        var html = [];
         var settings = {
 			optionClass: 'option',
 			optionsClass: 'options',
@@ -76,7 +76,7 @@
 				$.extend(settings, options);
 			}
             // hide the select
-            //$this.hide();
+            $this.hide();
 
 			// $rock enthält Element ($this) und Zustand (z.B. open)
 			// Hat noch Platz für mehr ;-)
@@ -141,8 +141,7 @@
 					})));*/
 					// ul für alle Options innerhalb der Optgroup
 
-                    var ululul = $('<ul />');
-					$(this).children().each(function () {
+					$this.children().each(function () {
 						html.push(methods.buildLi(this));
 					});
                     html.push('</ul></li>');
