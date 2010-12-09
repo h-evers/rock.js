@@ -287,7 +287,11 @@
     <script type="text/javascript" src="js/jquery.rock.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
-    	    $('select').rocks();
+            console.time('rock');
+
+            $('select').rocks();
+            console.timeEnd("rock");
+            
 		});
     </script>
 </body>
