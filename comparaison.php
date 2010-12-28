@@ -45,13 +45,8 @@ function random_string(){
 $html = '';
 for($i=1;$i<=LOOPS;$i++){
 
-if($i%10===1){
-    $html .= '<optgroup label="'.random_string().'">'."\n";
-    }
+
               $html .= '<option value="value'.random_string().'">'.random_string().'</option>'."\n";
-if($i%10===0 || $i==LOOPS){
-        $html .= '</optgroup>'."\n";
-    }
 }
 
 ?>
@@ -59,7 +54,7 @@ if($i%10===0 || $i==LOOPS){
 	<table>
         <thead>
         <tr>
-            <th><?php echo LOOPS;?> Rock.js</th><th><?php echo LOOPS;?> ufd</th><th><?php echo LOOPS;?> uniform</th><th><?php echo LOOPS;?> rock fast</th>
+            <th><?php echo LOOPS;?> Rock.js</th><th><?php echo LOOPS;?> ufd</th><th><?php echo LOOPS;?> rock fast</th>
         </tr>
         </thead>
         <tbody>
@@ -77,11 +72,7 @@ if($i%10===0 || $i==LOOPS){
               <?php echo $html;?>
             </select></td>
 
-            <td>
-                <label for="uniform">label</label>
-                <select id="uniform" name="uniform">
-              <?php echo $html;?>
-            </select></td>
+
 
             <td>
                 <label for="rock_fast">label</label>
@@ -92,7 +83,7 @@ if($i%10===0 || $i==LOOPS){
 
         </tr>
         <tr>
-            <td id="rock_result">0</td><td id="ufd_result">0</td><td id="uniform_result">0</td><td id="rock_fast_result">0</td>
+            <td id="rock_result">0</td><td id="ufd_result">0</td><td id="rock_fast_result">0</td>
         </tr>
         </tbody>
 
@@ -104,7 +95,6 @@ if($i%10===0 || $i==LOOPS){
     <script type="text/javascript" src="js/comparaison/uid/jquery-ui-1.8.js"></script>
     <script type="text/javascript" src="js/comparaison/uid/ui.core.js"></script>
     <script type="text/javascript" src="js/comparaison/uid/jquery.ui.ufd.min.js"></script>
-    <script type="text/javascript" src="js/comparaison/uniform/jquery.uniform.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function ($) {
             var start = (new Date).getTime();
@@ -123,10 +113,7 @@ if($i%10===0 || $i==LOOPS){
             var diff = (new Date).getTime() - start;
             $('#rock_fast_result').text(diff+' ms');
 
-            var start = (new Date).getTime();
-            $('#uniform').uniform();
-            var diff = (new Date).getTime() - start;
-            $('#uniform_result').text(diff+' ms');
+
 
 
 
