@@ -79,7 +79,7 @@
                 $.extend(settings, options);
             }
             // hide <select> element in dom
-            //$this.hide();
+            $this.hide();
             // save the text for more performance
             $rock.handleText = $this.find('option:selected').text();
             // build html
@@ -88,6 +88,7 @@
             html.push('<ul class="' + settings.optionsClass + '">');
             // find all <option> and <optgroup>
             $this.children().each(function () {
+                // <option> OR <optgroup>
                 var $this = $(this);
                 // hey, it's an <optgroup>
                 if ($this.is('optgroup')) {
@@ -95,7 +96,8 @@
                     html.push('<ul>');
                     // loop the nested <option> elements
                     $this.children('option').each(function () {
-                        html.push(methods.buildLi($this));
+                        var $nestedOption = $(this);
+                        html.push(methods.buildLi($nestedOption));
                     });
                     html.push('</ul>');
                     html.push('</li>');
