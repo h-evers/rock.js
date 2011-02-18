@@ -17,6 +17,13 @@
 			margin: 20px;
 		}
 	</style>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.rock.js"></script>
+	<script type="text/javascript">
+	    $(document).ready(function ($) {
+	        $('select').rocks();
+		});
+	</script>
 </head>
 <body>
 	<h1>Rock.js</h1>
@@ -284,14 +291,5 @@
         <option value="lollipops">Red Lollipops</option>
     </select>
     <div class="rocks_not">bla bla</div>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery.rock_fast.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function ($) {
-
-            $('select').rock_fast();
-            
-		});
-    </script>
 </body>
 </html>
