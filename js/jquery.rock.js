@@ -10,6 +10,9 @@
             mobileClassWP7: 'rjswp7',
             plainClass: 'rjsplain',
             searchTimeout: 1000,
+            replace: {'(':'<span>',
+                ')':'</span>'
+            },
             onChange: function () {}
         },
             timeout = [],
@@ -18,14 +21,43 @@
             // private methods
             methods = {
                 buildLi: function ($element) {
-                    return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + $element.text() + '</button></li>';
+                    var text = $element.text();
+                    text = methods.parseText(text);
+                    return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
                 },
 
+                isCheckboxChecked: function($checkbox){
+                    return $checkbox.is(':checked');
+                },
+                checkCheckbox: function($checkbox){
+                    $checkbox.data('checked',true);
+                    $checkbox.attr('checked',true);
+
+                },
+                uncheckCheckbox: function($checkbox){
+                    $checkbox.data('checked',false);
+                    $checkbox.attr('checked',false);
+                },
+                toggleButton: function($checkbox,$button){
+                    if($checkbox.data('checked')){
+                       $button.addClass('checked');
+                    }
+                    else {
+                         $button.removeClass('checked');
+                    }
+                },
+                parseText:function(text){
+
+                    $.each(settings.replace,function(index,value){
+                        text = text.replace(index,value);
+                    });
+                    return text;
+                },
                 // close a single <ul>
                 close: function ($rock) {
                     $rock.element.removeClass(settings.openClass);
                     $rock.open = false;
-                    $(document).unbind('click.rock').unbind('keyup.rock');
+                    $(document).unbind('mouseup.rock').unbind('keyup.rock');
                 },
                 // close all and open the clicked one
                 open: function ($rock) {
@@ -42,7 +74,7 @@
 
                     $(document).bind({
                         // close on a click outside
-                        'click.rock': function () {
+                        'mouseup.rock': function () {
                             methods.close($rock);
                         },
                         // close on pressing ESC
@@ -59,8 +91,43 @@
         };
         // the magic starts here
         return this.each(function () {
-            var $this = $(this),
-                $rock = {
+            var $this = $(this);
+
+
+            // if element is no <select>, quit
+            if ($this.is('input[type=checkbox]')) {
+            	var $button;
+
+
+
+                $button = $('<button/>',{
+                    click:function(){
+
+                        methods.toggleButton($this,$button);
+                        if(methods.isCheckboxChecked($this)){
+                            methods.uncheckCheckbox($this);
+                        }
+                        else {
+                            methods.checkCheckbox($this);
+                        }
+
+                    },
+                    text: '✓'
+                });
+                methods.toggleButton($this,$button);
+                $this.bind(
+                        'change',function(){
+
+                                   methods.toggleButton($this, $button);
+
+
+
+                        }).after($button);
+            	// /return (jQuery);
+            }
+            if ($this.is('select')){
+
+                var  $rock = {
                     'buttons': []
                 },
                 enter,
@@ -70,15 +137,12 @@
                     'class': 'rockdown'
                 });
 
-            // if element is no <select>, quit
-            if (!$this.is('select')) {
-            	return (jQuery);
-            }
+
             // if iphone, android or windows phone 7, don't replace select
 			var userAgent = navigator.userAgent.toLowerCase();
 			if (userAgent.match(/(iphone|android|xblwp7|IEMobile)/)) {
 				$this.addClass(settings.plainClass);
-				$('body').addClass(settings.mobileClass);					
+				$('body').addClass(settings.mobileClass);
 					if (userAgent.match(/(xblwp7|IEMobile)/)) {
 						$('body').addClass(settings.mobileClassWP7);
 					}
@@ -93,6 +157,7 @@
             $this.hide();
             // save the text for more performance
             $rock.handleText = $this.find('option:selected').text();
+
             // build html
             html.push('<li><button class="handle" aria-valuetext="' + $rock.handleText + '">' + $rock.handleText + '</button></li>');
             html.push('<li>');
@@ -127,7 +192,8 @@
             // a lot of event delegation for the ul
             $rock.element = $ul
             // click on a button
-                .delegate('li.option button', 'click.rock', function (e) {
+                .delegate('li.option button', 'click.rock mouseup.rock', function (e) {
+                    e.preventDefault();
 
                     var $target = $(e.target);
                     // remove the active class from old element
@@ -143,11 +209,14 @@
                 })
             // key event
                 .delegate('li.option button,button.handle', 'keydown.rock', function (e) {
-                // arrow down or arrow up is pressed
-                    if (e.which === 40 || e.which === 38) {
-                        e.preventDefault();
+
+                if (e.which === 40 || e.which === 38 || e.which === 32) {
+                    enter = '';
+                    e.preventDefault();
                         // find the clicked button in the array, not in the DOM
+
                         $rock.buttons.each(function (index, value) {
+
                             // button found
                             if (e.target === value) {
                                 // arrow down ⇩
@@ -167,6 +236,7 @@
                             }
                         });
                     }
+                    else {
                 //clear all timeouts
                     $.each(timeout, function () {
                         window.clearTimeout(this);
@@ -176,35 +246,48 @@
                     }, settings.searchTimeout);
                     timeout.push(id);
                     enter = enter + String.fromCharCode(e.which);
+                console.log(enter);
+
                     $rock.buttons.each(function (index, value) {
                         var $this = $(this);
                         $rock.$last = $this;
                         if ($this.text().toLowerCase().indexOf(enter.toLowerCase()) === 0) {
+
+
                             if (!$rock.open) {
                                 $this.trigger('click.rock');
                             } else {
                                 $this.hover().focus();
                             }
+                            return false;
+                        }
+                        else {
+
                         }
                         // nothing found
                     });
+                    }
                 }).delegate('ul li.' + settings.optionClass, 'mouseover', function () {
                     $(this).find('button').focus();
-                }).delegate('button.handle', 'click.rock', function (e) {
+                }).delegate('button.handle', 'mousedown.rock', function (e) {
                 // don't bubble
                     $ul.find('button.handle').focus();
                     e.stopPropagation();
                     // please close it
                     if ($rock.open) {
-                        methods.close($rock);
+                       methods.close($rock);
                     } else {
                         // please open it
                         methods.open($rock);
                     }
-                }).delegate('button.handle', 'keyup.rock', function (e) {
+                }).delegate('button.handle', 'mouseup.rock', function (e) {
+
+                e.stopPropagation();
+                            e.preventDefault();
+                                                        }).delegate('button.handle', 'keyup.rock', function (e) {
 
                     // arrow down
-                    if (e.which === 40) {
+                    if (e.which === 40 || e.which === 32) {
                         // open it
                         if (!$rock.open) {
                             methods.open($rock);
@@ -231,6 +314,7 @@
             });
             // push all replaced <select> to stack
             rocks.push($rock);
+                }
         });
     };
 }(jQuery));

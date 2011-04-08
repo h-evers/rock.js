@@ -23,3 +23,6 @@ ul.rockdown button {
 	background: transparent;
 	border: 0;
 }
+.checked {
+    background:#f09;
+}
