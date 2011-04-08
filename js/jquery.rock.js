@@ -10,7 +10,8 @@
             mobileClassWP7: 'rjswp7',
             plainClass: 'rjsplain',
             searchTimeout: 1000,
-            replace: {
+            replace:false,
+            replaceChars: {
                 '(': '<span>',
                 ')': '</span>'
             },
@@ -20,13 +21,7 @@
             // big stack for all rockjs <ul>
             rocks = [],
             // private methods
-            methods = {
-                buildLi: function ($element) {
-                    var text = $element.text();
-                    text = methods.parseText(text);
-                    return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
-                },
-                /*isCheckboxChecked: function ($checkbox) {
+/*isCheckboxChecked: function ($checkbox) {
                     return $checkbox.is(':checked');
                 },
                 checkCheckbox: function ($checkbox) {
@@ -44,43 +39,50 @@
                         $button.removeClass('checked');
                     }
                 },*/
-                parseText: function (text) {
-                    $.each(settings.replace, function (index, value) {
-                        text = text.replace(index, value);
-                    });
-                    return text;
-                },
-                // close a single <ul>
-                close: function ($rock) {
-                    $rock.element.removeClass(settings.openClass);
-                    $rock.open = false;
-                    $(document).unbind('mouseup.rock').unbind('keyup.rock');
-                },
-                // close all and open the clicked one
-                open: function ($rock) {
-                    // close them all and remove the events
-                    $(document).unbind('click.rock').unbind('keyup.rock');
-                    $.each(rocks, function () {
-                        this.element.removeClass(settings.openClass);
-                        this.open = false;
-                    });
-                    // open it
-                    $rock.element.addClass(settings.openClass);
-                    $rock.element.find('ul li button.active').focus();
-                    $rock.open = true;
-                    $(document).bind({
-                        // close on a click outside
-                        'mouseup.rock': function () {
-                            methods.close($rock);
-                        },
-                        // close on pressing ESC
-                        'keyup.rock': function (e) {
-                            if (e.which === 27) {
-                                methods.close($rock);
-                            }
-                        }
-                    });
+            parseText = function (text) {
+                $.each(settings.replaceChars, function (index, value) {
+                    text = text.replace(index, value);
+                });
+                return text;
+            },
+            buildLi = function ($element) {
+                var text = $element.text();
+                if(settings.replace){
+                 text = parseText(text);
                 }
+
+                return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
+            },
+            // close a single <ul>
+            close = function ($rock) {
+                $rock.element.removeClass(settings.openClass);
+                $rock.open = false;
+                $(document).unbind('mouseup.rock').unbind('keyup.rock');
+            },
+            // close all and open the clicked one
+            open = function ($rock) {
+                // close them all and remove the events
+                $(document).unbind('click.rock').unbind('keyup.rock');
+                $.each(rocks, function () {
+                    this.element.removeClass(settings.openClass);
+                    this.open = false;
+                });
+                // open it
+                $rock.element.addClass(settings.openClass);
+                $rock.element.find('ul li button.active').focus();
+                $rock.open = true;
+                $(document).bind({
+                    // close on a click outside
+                    'mouseup.rock': function () {
+                        close($rock);
+                    },
+                    // close on pressing ESC
+                    'keyup.rock': function (e) {
+                        if (e.which === 27) {
+                            close($rock);
+                        }
+                    }
+                });
             };
         this.hide = function () {
             $(this).hide();
@@ -89,22 +91,22 @@
         return this.each(function () {
             var $this = $(this);
             // if element is no <select>, quit
-            /*if ($this.is('input[type=checkbox]')) {
+/*if ($this.is('input[type=checkbox]')) {
                 var $button;
                 $button = $('<button/>', {
                     click: function () {
-                        methods.toggleButton($this, $button);
-                        if (methods.isCheckboxChecked($this)) {
-                            methods.uncheckCheckbox($this);
+                        toggleButton($this, $button);
+                        if (isCheckboxChecked($this)) {
+                            uncheckCheckbox($this);
                         } else {
-                            methods.checkCheckbox($this);
+                            checkCheckbox($this);
                         }
                     },
                     text: '✓'
                 });
-                methods.toggleButton($this, $button);
+                toggleButton($this, $button);
                 $this.bind('change', function () {
-                    methods.toggleButton($this, $button);
+                    toggleButton($this, $button);
                 }).after($button);
                 // /return (jQuery);
             }*/
@@ -112,7 +114,7 @@
                 var $rock = {
                     'buttons': []
                 },
-                    enter,
+                    enter = '',
                     // array for html result
                     html = [],
                     $ul = $('<ul/>', {
@@ -122,9 +124,9 @@
                 var userAgent = navigator.userAgent.toLowerCase();
                 if (userAgent.match(/(iphone|android|xblwp7|IEMobile)/)) {
                     $this.addClass(settings.plainClass);
-                    $('body').addClass(settings.mobileClass);
+                    $(document.body).addClass(settings.mobileClass);
                     if (userAgent.match(/(xblwp7|IEMobile)/)) {
-                        $('body').addClass(settings.mobileClassWP7);
+                        $(document.body).addClass(settings.mobileClassWP7);
                     }
                     // exit
                     return (jQuery);
@@ -134,7 +136,7 @@
                     $.extend(settings, options);
                 }
                 // hide <select> element in dom
-                $this.hide();
+                //$this.hide();
                 // save the text for more performance
                 $rock.handleText = $this.find('option:selected').text();
                 // build html
@@ -152,13 +154,13 @@
                         // loop the nested <option> elements
                         $this.children('option').each(function () {
                             var $nestedOption = $(this);
-                            html.push(methods.buildLi($nestedOption));
+                            html.push(buildLi($nestedOption));
                         });
                         html.push('</ul>');
                         html.push('</li>');
                     } else {
                         // it's an <option>
-                        html.push(methods.buildLi($this));
+                        html.push(buildLi($this));
                     }
                 });
                 html.push('</ul>');
@@ -180,13 +182,13 @@
                     // change text on handle
                     $ul.find('button.handle').text($target.text()).attr('aria-valuetext', $target.text());
                     // close it
-                    methods.close($rock);
+                    close($rock);
                     // fire callback
                     settings.onChange.call($this);
                 })
-                // key event
-                .delegate('li.option button', 'keydown.rock', function (e) {
-                    if (e.which === 40 || e.which === 38) {
+                // search, navigate on key event on a button or the handler
+                .delegate('li.option button,button.handle', 'keydown.rock', function (e) {
+                    if (e.which === 40 || e.which === 38 || e.which === 32) {
                         enter = '';
                         e.preventDefault();
                         // find the clicked button in the array, not in the DOM
@@ -230,31 +232,34 @@
                                     $this.hover().focus();
                                 }
                                 return false;
-                            } else {}
-                            // nothing found
+                            }
+                            // else nothing found
                         });
                     }
                 }).delegate('ul li.' + settings.optionClass, 'mouseover', function () {
                     $(this).find('button').focus();
-                }).delegate('button.handle', 'mousedown.rock,click.rock', function (e) {
+                })
+                        // events on the handle
+                        .delegate('button.handle', 'mousedown.rock,click.rock', function (e) {
                     $ul.find('button.handle').focus();
                     e.stopPropagation();
                     // please close it
                     if ($rock.open) {
-                        methods.close($rock);
+                        close($rock);
                     } else {
                         // please open it
-                        methods.open($rock);
+                        open($rock);
                     }
                 }).delegate('button.handle', 'mouseup.rock', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                }).delegate('button.handle', 'keyup.rock', function (e) {
+                })
+                        .delegate('button.handle', 'keyup.rock', function (e) {
                     // arrow down
                     if (e.which === 40 || e.which === 32) {
                         // open it
                         if (!$rock.open) {
-                            methods.open($rock);
+                            open($rock);
                         } else {
                             // if it's open, go to first element
                             $rock.element.find('li.option:first button').focus();
@@ -278,7 +283,7 @@
             }
             // it's not rockable
             else {
-              return (jQuery);
+                return (jQuery);
             }
         });
     };
