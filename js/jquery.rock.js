@@ -202,7 +202,8 @@
                                         // go to next element and focus it, for ie6 we should add a hover class
                                         $rock.buttons.get(index + 1).focus();
                                     }
-                                } else {
+                                }
+                                if(e.which === 38) {
                                     // arrow up ↑
                                     // if we are on the first element, just do nothing
                                     if (index > 0) {
@@ -221,7 +222,6 @@
                         }, settings.searchTimeout);
                         timeout.push(id);
                         enter = enter + String.fromCharCode(e.which);
-                        console.log(enter);
                         $rock.buttons.each(function (index, value) {
                             var $this = $(this);
                             $rock.$last = $this;
