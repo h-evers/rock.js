@@ -84,9 +84,6 @@
                     }
                 });
             };
-        this.hide = function () {
-            $(this).hide();
-        };
         // the magic starts here
         return this.each(function () {
             var $this = $(this);
@@ -188,7 +185,7 @@
                 })
                 // search, navigate on key event on a button or the handler
                 .delegate('li.option button,button.handle', 'keydown.rock', function (e) {
-                    if (e.which === 40 || e.which === 38 || e.which === 32) {
+                    if (e.which === 40 || e.which === 38) {
                         enter = '';
                         e.preventDefault();
                         // find the clicked button in the array, not in the DOM
