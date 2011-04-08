@@ -10,8 +10,9 @@
             mobileClassWP7: 'rjswp7',
             plainClass: 'rjsplain',
             searchTimeout: 1000,
-            replace: {'(':'<span>',
-                ')':'</span>'
+            replace: {
+                '(': '<span>',
+                ')': '</span>'
             },
             onChange: function () {}
         },
@@ -25,31 +26,27 @@
                     text = methods.parseText(text);
                     return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
                 },
-
-                isCheckboxChecked: function($checkbox){
+                /*isCheckboxChecked: function ($checkbox) {
                     return $checkbox.is(':checked');
                 },
-                checkCheckbox: function($checkbox){
-                    $checkbox.data('checked',true);
-                    $checkbox.attr('checked',true);
-
+                checkCheckbox: function ($checkbox) {
+                    $checkbox.data('checked', true);
+                    $checkbox.attr('checked', true);
                 },
-                uncheckCheckbox: function($checkbox){
-                    $checkbox.data('checked',false);
-                    $checkbox.attr('checked',false);
+                uncheckCheckbox: function ($checkbox) {
+                    $checkbox.data('checked', false);
+                    $checkbox.attr('checked', false);
                 },
-                toggleButton: function($checkbox,$button){
-                    if($checkbox.data('checked')){
-                       $button.addClass('checked');
+                toggleButton: function ($checkbox, $button) {
+                    if ($checkbox.data('checked')) {
+                        $button.addClass('checked');
+                    } else {
+                        $button.removeClass('checked');
                     }
-                    else {
-                         $button.removeClass('checked');
-                    }
-                },
-                parseText:function(text){
-
-                    $.each(settings.replace,function(index,value){
-                        text = text.replace(index,value);
+                },*/
+                parseText: function (text) {
+                    $.each(settings.replace, function (index, value) {
+                        text = text.replace(index, value);
                     });
                     return text;
                 },
@@ -71,7 +68,6 @@
                     $rock.element.addClass(settings.openClass);
                     $rock.element.find('ul li button.active').focus();
                     $rock.open = true;
-
                     $(document).bind({
                         // close on a click outside
                         'mouseup.rock': function () {
@@ -92,109 +88,90 @@
         // the magic starts here
         return this.each(function () {
             var $this = $(this);
-
-
             // if element is no <select>, quit
-            if ($this.is('input[type=checkbox]')) {
-            	var $button;
-
-
-
-                $button = $('<button/>',{
-                    click:function(){
-
-                        methods.toggleButton($this,$button);
-                        if(methods.isCheckboxChecked($this)){
+            /*if ($this.is('input[type=checkbox]')) {
+                var $button;
+                $button = $('<button/>', {
+                    click: function () {
+                        methods.toggleButton($this, $button);
+                        if (methods.isCheckboxChecked($this)) {
                             methods.uncheckCheckbox($this);
-                        }
-                        else {
+                        } else {
                             methods.checkCheckbox($this);
                         }
-
                     },
                     text: '✓'
                 });
-                methods.toggleButton($this,$button);
-                $this.bind(
-                        'change',function(){
-
-                                   methods.toggleButton($this, $button);
-
-
-
-                        }).after($button);
-            	// /return (jQuery);
-            }
-            if ($this.is('select')){
-
-                var  $rock = {
+                methods.toggleButton($this, $button);
+                $this.bind('change', function () {
+                    methods.toggleButton($this, $button);
+                }).after($button);
+                // /return (jQuery);
+            }*/
+            if ($this.is('select')) {
+                var $rock = {
                     'buttons': []
                 },
-                enter,
-                // array for html result
-                html = [],
-                $ul = $('<ul/>', {
-                    'class': 'rockdown'
-                });
-
-
-            // if iphone, android or windows phone 7, don't replace select
-			var userAgent = navigator.userAgent.toLowerCase();
-			if (userAgent.match(/(iphone|android|xblwp7|IEMobile)/)) {
-				$this.addClass(settings.plainClass);
-				$('body').addClass(settings.mobileClass);
-					if (userAgent.match(/(xblwp7|IEMobile)/)) {
-						$('body').addClass(settings.mobileClassWP7);
-					}
-				// exit
-				return (jQuery);
-            }
-            // set custom settings
-            if (options) {
-                $.extend(settings, options);
-            }
-            // hide <select> element in dom
-            $this.hide();
-            // save the text for more performance
-            $rock.handleText = $this.find('option:selected').text();
-
-            // build html
-            html.push('<li><button class="handle" aria-valuetext="' + $rock.handleText + '">' + $rock.handleText + '</button></li>');
-            html.push('<li>');
-            html.push('<ul class="' + settings.optionsClass + '">');
-            // find all <option> and <optgroup>
-            $this.children().each(function () {
-                // <option> OR <optgroup>
-                var $this = $(this);
-                // hey, it's an <optgroup>
-                if ($this.is('optgroup')) {
-                    html.push('<li class="' + settings.optClass + '"><span>' + $this.attr('label') + '</span>');
-                    html.push('<ul>');
-                    // loop the nested <option> elements
-                    $this.children('option').each(function () {
-                        var $nestedOption = $(this);
-                        html.push(methods.buildLi($nestedOption));
+                    enter,
+                    // array for html result
+                    html = [],
+                    $ul = $('<ul/>', {
+                        'class': 'rockdown'
                     });
-                    html.push('</ul>');
-                    html.push('</li>');
-                } else {
-                    // it's an <option>
-                    html.push(methods.buildLi($this));
+                // if iphone, android or windows phone 7, don't replace select
+                var userAgent = navigator.userAgent.toLowerCase();
+                if (userAgent.match(/(iphone|android|xblwp7|IEMobile)/)) {
+                    $this.addClass(settings.plainClass);
+                    $('body').addClass(settings.mobileClass);
+                    if (userAgent.match(/(xblwp7|IEMobile)/)) {
+                        $('body').addClass(settings.mobileClassWP7);
+                    }
+                    // exit
+                    return (jQuery);
                 }
-            });
-            html.push('</ul>');
-            html.push('</li></ul>');
-
-            // simulate the click on the linked label
-            $('label[for=' + $this.attr('name') + ']').bind('click.rock', function () {
-                $ul.find('button.handle').focus();
-            });
-            // a lot of event delegation for the ul
-            $rock.element = $ul
-            // click on a button
+                // set custom settings
+                if (options) {
+                    $.extend(settings, options);
+                }
+                // hide <select> element in dom
+                $this.hide();
+                // save the text for more performance
+                $rock.handleText = $this.find('option:selected').text();
+                // build html
+                html.push('<li><button class="handle" aria-valuetext="' + $rock.handleText + '">' + $rock.handleText + '</button></li>');
+                html.push('<li>');
+                html.push('<ul class="' + settings.optionsClass + '">');
+                // find all <option> and <optgroup>
+                $this.children().each(function () {
+                    // <option> OR <optgroup>
+                    var $this = $(this);
+                    // hey, it's an <optgroup>
+                    if ($this.is('optgroup')) {
+                        html.push('<li class="' + settings.optClass + '"><span>' + $this.attr('label') + '</span>');
+                        html.push('<ul>');
+                        // loop the nested <option> elements
+                        $this.children('option').each(function () {
+                            var $nestedOption = $(this);
+                            html.push(methods.buildLi($nestedOption));
+                        });
+                        html.push('</ul>');
+                        html.push('</li>');
+                    } else {
+                        // it's an <option>
+                        html.push(methods.buildLi($this));
+                    }
+                });
+                html.push('</ul>');
+                html.push('</li></ul>');
+                // simulate the click on the linked label
+                $('label[for=' + $this.attr('name') + ']').bind('click.rock', function () {
+                    $ul.find('button.handle').focus();
+                });
+                // a lot of event delegation for the ul
+                $rock.element = $ul
+                // click on a button
                 .delegate('li.option button', 'click.rock mouseup.rock', function (e) {
                     e.preventDefault();
-
                     var $target = $(e.target);
                     // remove the active class from old element
                     $ul.find('li button.active').removeClass('active');
@@ -207,16 +184,13 @@
                     // fire callback
                     settings.onChange.call($this);
                 })
-            // key event
-                .delegate('li.option button,button.handle', 'keydown.rock', function (e) {
-
-                if (e.which === 40 || e.which === 38 || e.which === 32) {
-                    enter = '';
-                    e.preventDefault();
+                // key event
+                .delegate('li.option button', 'keydown.rock', function (e) {
+                    if (e.which === 40 || e.which === 38) {
+                        enter = '';
+                        e.preventDefault();
                         // find the clicked button in the array, not in the DOM
-
                         $rock.buttons.each(function (index, value) {
-
                             // button found
                             if (e.target === value) {
                                 // arrow down ⇩
@@ -235,57 +209,47 @@
                                 }
                             }
                         });
-                    }
-                    else {
-                //clear all timeouts
-                    $.each(timeout, function () {
-                        window.clearTimeout(this);
-                    });
-                    var id = window.setTimeout(function () {
-                        enter = '';
-                    }, settings.searchTimeout);
-                    timeout.push(id);
-                    enter = enter + String.fromCharCode(e.which);
-                console.log(enter);
-
-                    $rock.buttons.each(function (index, value) {
-                        var $this = $(this);
-                        $rock.$last = $this;
-                        if ($this.text().toLowerCase().indexOf(enter.toLowerCase()) === 0) {
-
-
-                            if (!$rock.open) {
-                                $this.trigger('click.rock');
-                            } else {
-                                $this.hover().focus();
-                            }
-                            return false;
-                        }
-                        else {
-
-                        }
-                        // nothing found
-                    });
+                    } else {
+                        //clear all timeouts
+                        $.each(timeout, function () {
+                            window.clearTimeout(this);
+                        });
+                        var id = window.setTimeout(function () {
+                            enter = '';
+                        }, settings.searchTimeout);
+                        timeout.push(id);
+                        enter = enter + String.fromCharCode(e.which);
+                        console.log(enter);
+                        $rock.buttons.each(function (index, value) {
+                            var $this = $(this);
+                            $rock.$last = $this;
+                            if ($this.text().toLowerCase().indexOf(enter.toLowerCase()) === 0) {
+                                if (!$rock.open) {
+                                    $this.trigger('click.rock');
+                                } else {
+                                    $this.hover().focus();
+                                }
+                                return false;
+                            } else {}
+                            // nothing found
+                        });
                     }
                 }).delegate('ul li.' + settings.optionClass, 'mouseover', function () {
                     $(this).find('button').focus();
-                }).delegate('button.handle', 'mousedown.rock', function (e) {
-                // don't bubble
+                }).delegate('button.handle', 'mousedown.rock,click.rock', function (e) {
                     $ul.find('button.handle').focus();
                     e.stopPropagation();
                     // please close it
                     if ($rock.open) {
-                       methods.close($rock);
+                        methods.close($rock);
                     } else {
                         // please open it
                         methods.open($rock);
                     }
                 }).delegate('button.handle', 'mouseup.rock', function (e) {
-
-                e.stopPropagation();
-                            e.preventDefault();
-                                                        }).delegate('button.handle', 'keyup.rock', function (e) {
-
+                    e.stopPropagation();
+                    e.preventDefault();
+                }).delegate('button.handle', 'keyup.rock', function (e) {
                     // arrow down
                     if (e.which === 40 || e.which === 32) {
                         // open it
@@ -297,24 +261,25 @@
                         }
                     }
                 });
-            // inject a lot of html to the <ul class="rockdown">
-            $ul.append(html.join(""));
-
-            // save all buttons in array
-            $rock.buttons = $ul.find('li.' + settings.optionClass + ' button');
-
-            // inject the <ul class="rockdown"> in the dom, after the hidden <select>
-            $this.after($ul);
-            // nice to have: do it bidirectional
-            $this.bind('change', function () {
-                var $this = $(this);
-                var value = $this.val();
-                $ul.find('button.handle').text($this.find('option[value=' + value + ']').first().text()).end().find('ul li[data-value=' + value + '] button').addClass('active');
-
-            });
-            // push all replaced <select> to stack
-            rocks.push($rock);
-                }
+                // inject a lot of html to the <ul class="rockdown">
+                $ul.append(html.join(""));
+                // save all buttons in array
+                $rock.buttons = $ul.find('li.' + settings.optionClass + ' button');
+                // inject the <ul class="rockdown"> in the dom, after the hidden <select>
+                $this.after($ul);
+                // nice to have: do it bidirectional
+                $this.bind('change', function () {
+                    var $this = $(this);
+                    var value = $this.val();
+                    $ul.find('button.handle').text($this.find('option[value=' + value + ']').first().text()).end().find('ul li[data-value=' + value + '] button').addClass('active');
+                });
+                // push all replaced <select> to stack
+                rocks.push($rock);
+            }
+            // it's not rockable
+            else {
+              return (jQuery);
+            }
         });
     };
 }(jQuery));
