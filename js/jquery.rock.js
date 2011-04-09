@@ -57,12 +57,12 @@
             close = function ($rock) {
                 $rock.element.removeClass(settings.openClass);
                 $rock.open = false;
-                $(document).unbind('mouseup.rock').unbind('keyup.rock');
+                $(document.body).unbind('mouseup.rock').unbind('keyup.rock');
             },
             // close all and open the clicked one
             open = function ($rock) {
                 // close them all and remove the events
-                $(document).unbind('click.rock').unbind('keyup.rock');
+                $(document.body).unbind('mouseup.rock').unbind('keyup.rock');
                 $.each(rocks, function () {
                     this.element.removeClass(settings.openClass);
                     this.open = false;
@@ -73,8 +73,13 @@
                 $rock.open = true;
                 $(document.body).bind({
                     // close on a click outside
-                    'mouseup.rock': function () {
-                        close($rock);
+                    'mouseup.rock': function (e) {
+                        // check, if we are inside, needed for windows firefox
+                        if(!$rock.element.has($(e.target)).length){
+                                  close($rock);
+                          }
+
+
                     },
                     // close on pressing ESC
                     'keyup.rock': function (e) {
