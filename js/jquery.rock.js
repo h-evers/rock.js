@@ -10,7 +10,7 @@
             mobileClassWP7: 'rjswp7',
             plainClass: 'rjsplain',
             searchTimeout: 1000,
-            replace:false,
+            replace: false,
             replaceChars: {
                 '(': '<span>',
                 ')': '</span>'
@@ -47,10 +47,9 @@
             },
             buildLi = function ($element) {
                 var text = $element.text();
-                if(settings.replace){
-                 text = parseText(text);
+                if (settings.replace) {
+                    text = parseText(text);
                 }
-
                 return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
             },
             // close a single <ul>
@@ -75,11 +74,9 @@
                     // close on a click outside
                     'mouseup.rock': function (e) {
                         // check, if we are inside, needed for windows firefox
-                        if(!$rock.element.has($(e.target)).length){
-                                  close($rock);
-                          }
-
-
+                        if (!$rock.element.has($(e.target)).length) {
+                            close($rock);
+                        }
                     },
                     // close on pressing ESC
                     'keyup.rock': function (e) {
@@ -205,7 +202,7 @@
                                         $rock.buttons.get(index + 1).focus();
                                     }
                                 }
-                                if(e.which === 38) {
+                                if (e.which === 38) {
                                     // arrow up ↑
                                     // if we are on the first element, just do nothing
                                     if (index > 0) {
@@ -241,8 +238,8 @@
                 }).delegate('ul li.' + settings.optionClass, 'mouseover', function () {
                     $(this).find('button').focus();
                 })
-                        // events on the handle
-                        .delegate('button.handle', 'mousedown.rock,click.rock', function (e) {
+                // events on the handle
+                .delegate('button.handle', 'mousedown.rock,click.rock', function (e) {
                     $ul.find('button.handle').focus();
                     e.stopPropagation();
                     // please close it
@@ -255,8 +252,7 @@
                 }).delegate('button.handle', 'mouseup.rock', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                })
-                        .delegate('button.handle', 'keyup.rock', function (e) {
+                }).delegate('button.handle', 'keyup.rock', function (e) {
                     // arrow down
                     if (e.which === 40 || e.which === 32) {
                         // open it
