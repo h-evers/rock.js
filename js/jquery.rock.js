@@ -71,7 +71,7 @@
                 $rock.element.addClass(settings.openClass);
                 $rock.element.find('ul li button.active').focus();
                 $rock.open = true;
-                $(document).bind({
+                $(document.body).bind({
                     // close on a click outside
                     'mouseup.rock': function () {
                         close($rock);
