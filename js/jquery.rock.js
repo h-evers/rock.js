@@ -11,8 +11,7 @@
             plainClass: 'rjsplain',
             searchTimeout: 1000,
             handleClass:'myclass',
-            handleMarkupStart:'',
-            handleMarkupEnd: '',
+            handleMarkup:'',
             replace: false,
             replaceChars: {
                 '(': '<span>',
@@ -142,7 +141,7 @@
                 // save the text for more performance
                 $rock.handleText = $this.find('option:selected').text();
                 // build html
-                html.push('<li><button class="handle '+settings.handleClass+'" aria-valuetext="' + $rock.handleText + '">'+settings.handleMarkupStart + $rock.handleText + settings.handleMarkupEnd + '</button></li>');
+                html.push('<li><button class="handle '+settings.handleClass+'" aria-valuetext="' + $rock.handleText + '">'+$rock.handleText  + '</button></li>');
                 html.push('<li>');
                 html.push('<ul class="' + settings.optionsClass + '">');
                 // find all <option> and <optgroup>
@@ -269,6 +268,7 @@
                 });
                 // inject a lot of html to the <ul class="rockdown">
                 $ul.append(html.join(""));
+                $ul.find('button.handle').wrapInner($(settings.handleMarkup));
                 // save all buttons in array
                 $rock.buttons = $ul.find('li.' + settings.optionClass + ' button');
                 // inject the <ul class="rockdown"> in the dom, after the hidden <select>
