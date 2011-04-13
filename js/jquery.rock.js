@@ -10,6 +10,9 @@
             mobileClassWP7: 'rjswp7',
             plainClass: 'rjsplain',
             searchTimeout: 1000,
+            handleClass:'myclass',
+            handleMarkupStart:'',
+            handleMarkupEnd: '',
             replace: false,
             replaceChars: {
                 '(': '<span>',
@@ -21,24 +24,24 @@
             // big stack for all rockjs <ul>
             rocks = [],
             // private methods
-/*isCheckboxChecked: function ($checkbox) {
+            /*isCheckboxChecked = function ($checkbox) {
                     return $checkbox.is(':checked');
                 },
-                checkCheckbox: function ($checkbox) {
+                checkCheckbox = function ($checkbox) {
                     $checkbox.data('checked', true);
                     $checkbox.attr('checked', true);
                 },
-                uncheckCheckbox: function ($checkbox) {
+                uncheckCheckbox = function ($checkbox) {
                     $checkbox.data('checked', false);
                     $checkbox.attr('checked', false);
                 },
-                toggleButton: function ($checkbox, $button) {
+                toggleButton = function ($checkbox, $button) {
                     if ($checkbox.data('checked')) {
                         $button.addClass('checked');
                     } else {
                         $button.removeClass('checked');
                     }
-                },*/
+                }, */
             parseText = function (text) {
                 $.each(settings.replaceChars, function (index, value) {
                     text = text.replace(index, value);
@@ -139,7 +142,7 @@
                 // save the text for more performance
                 $rock.handleText = $this.find('option:selected').text();
                 // build html
-                html.push('<li><button class="handle" aria-valuetext="' + $rock.handleText + '">' + $rock.handleText + '</button></li>');
+                html.push('<li><button class="handle '+settings.handleClass+'" aria-valuetext="' + $rock.handleText + '">'+settings.handleMarkupStart + $rock.handleText + settings.handleMarkupEnd + '</button></li>');
                 html.push('<li>');
                 html.push('<ul class="' + settings.optionsClass + '">');
                 // find all <option> and <optgroup>
