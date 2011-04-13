@@ -144,7 +144,7 @@
                     $.extend(settings, options);
                 }
                 // hide <select> element in dom
-                //$this.hide();
+                $this.hide();
                 // save the text for more performance
                 rock.handleText = $this.find('option:selected').text();
                 // build html
