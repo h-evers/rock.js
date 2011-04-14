@@ -11,7 +11,7 @@
             plainClass: 'rjsplain',
             searchTimeout: 1000,
             handleClass: '',
-            handleMarkup: '<div><span></span></div>',
+            handleMarkup: '',
             replace: false,
             replaceChars: {
                 '(': '<span>',
