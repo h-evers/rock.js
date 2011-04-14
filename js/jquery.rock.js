@@ -55,7 +55,7 @@
                 return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
             },
             changeHandleTextAndAria = function($element,text){
-
+                $element.attr('aria-valuetext',text);
                 if(settings.handleMarkup!==''){
                     $element.find('*:not(:has("*"))').text(text);
                     }
