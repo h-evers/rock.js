@@ -11,7 +11,7 @@
             plainClass: 'rjsplain',
             searchTimeout: 1000,
             handleClass: '',
-            handleMarkup: '',
+            handleMarkup: '<div><span></span></div>',
             replace: false,
             replaceChars: {
                 '(': '<span>',
@@ -53,6 +53,15 @@
                     text = parseText(text);
                 }
                 return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
+            },
+            changeHandleTextAndAria = function($element,text){
+
+                if(settings.handleMarkup!==''){
+                    $element.find('*:not(:has("*"))').text(text);
+                    }
+                else {
+                        $element.text(text);
+                }
             },
             // close a single <ul>
             close = function (rock) {
@@ -117,9 +126,11 @@
 
                 return jQuery;
             } else if ($this.is('select')) {
+
+
                 var rock = {
                      buttons: [],
-                     $handle:null
+                     $handle:'rr'
                 },
                     enter = '',
                     // array for html result
@@ -144,7 +155,7 @@
                     $.extend(settings, options);
                 }
                 // hide <select> element in dom
-                $this.hide();
+                //$this.hide();
                 // save the text for more performance
                 rock.handleText = $this.find('option:selected').text();
                 // build html
@@ -182,20 +193,21 @@
 
                 rock.$element = $ul
                 // click on a button
-                .delegate('li.option button', 'click.rock', function (e) {
+                .delegate('li.option button', 'mousedown.rock', function (e) {
                     var $target = $(e.target);
                     // remove the active class from old element
                     $ul.find('li button.active').removeClass('active');
                     // set <select> value
                     $this.val($target.addClass('active').parent().attr('data-value'));
                     // change text on handle
-                    $ul.find('button.handle').attr('aria-valuetext', $target.text()).find('*:not(:has("*"))').text($target.text());
+
+                    changeHandleTextAndAria(rock.$handle,$target.text());
                     // close it
                     close(rock);
                     // fire callback
                     settings.onChange.call($this);
                 }).delegate('li.option button', 'mouseup.rock', function (e) {
-                    $(this).trigger('click');
+                    $(this).trigger('mousedown');
                 })
                 // search, navigate on key event on a button or the handler
                 .delegate('li.option button,button.handle', 'keydown.rock', function (e) {
@@ -278,12 +290,16 @@
                     }
                 });
 
-                rock.$handle = rock.$element.find('button.handle');
+
 
                 // inject a lot of html to the <ul class="rockdown">
                 $ul.append(html.join(""));
+
+                rock.$handle = $ul.find('button.handle');
+
+
                 // add custom markup
-                $ul.find('button.handle').wrapInner($(settings.handleMarkup));
+                rock.$handle.wrapInner($(settings.handleMarkup));
                 // save all buttons in array
                 rock.buttons = $ul.find('li.' + settings.optionClass + ' button');
                 // inject the <ul class="rockdown"> in the dom, after the hidden <select>
@@ -292,7 +308,9 @@
                 $this.bind('change', function () {
                     var $this = $(this);
                     var value = $this.val();
-                    $ul.find('button.handle :not(:has("*"))').text($this.find('option[value=' + value + ']').first().text()).end().find('ul li[data-value=' + value + '] button').addClass('active');
+                    var text = $this.find('option[value=' + value + ']').first().text();
+                    changeHandleTextAndAria(rock.$handle,text);
+                    $ul.find('ul li[data-value=' + value + '] button').addClass('active');
                 });
                 // push all replaced <select> to stack
                 rocks.push(rock);
