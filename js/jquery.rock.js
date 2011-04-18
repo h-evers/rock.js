@@ -4,6 +4,7 @@
         var settings = {
             optionClass: 'option',
             optionsClass: 'options',
+            activeClass: 'active',
             optClass: 'opt',
             openClass: 'open',
             mobileClass: 'rjsmo',
@@ -63,6 +64,10 @@
                         $element.text(text);
                 }
             },
+            setActive = function($element){
+                $element.find('.'+settings.activeClass).removeClass(settings.activeClass);
+
+            },
             // close a single <ul>
             close = function (rock) {
                 rock.$element.removeClass(settings.openClass);
@@ -78,7 +83,7 @@
                     this.open = false;
                 });
                 // open it
-                rock.$element.addClass(settings.openClass).find('ul li button.active').focus();
+                rock.$element.addClass(settings.openClass).find(settings.activeClass).focus();
                 rock.open = true;
                 $(document).bind({
                     // close on a click outside
@@ -196,11 +201,11 @@
                 .delegate('li.option button', 'mousedown.rock', function (e) {
                     var $target = $(e.target);
                     // remove the active class from old element
-                    $ul.find('li button.active').removeClass('active');
                     // set <select> value
-                    $this.val($target.addClass('active').parent().attr('data-value'));
-                    // change text on handle
 
+                    $this.val($target.addClass(settings.activeClass).parent().attr('data-value'));
+
+                    setActive($target);
                     changeHandleTextAndAria(rock.$handle,$target.text());
                     // close it
                     close(rock);
@@ -310,7 +315,8 @@
                     var value = $this.val();
                     var text = $this.find('option[value=' + value + ']').first().text();
                     changeHandleTextAndAria(rock.$handle,text);
-                    $ul.find('ul li[data-value=' + value + '] button').addClass('active');
+                    $ul.find('.'+settings.activeClass).removeClass(settings.activeClass)
+                       .find('ul li[data-value=' + value + '] button').addClass(settings.activeClass);
                 });
                 // push all replaced <select> to stack
                 rocks.push(rock);
