@@ -115,7 +115,7 @@
                 $this.hide();
                 $button = $('<button/>', {
                     click: function () {
-                        if (isCheckboxChecked($this)) {
+                        if ($this.data('checked')) {
                             setCheckbox($this, false);
 
                         } else {
