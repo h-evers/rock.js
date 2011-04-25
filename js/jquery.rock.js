@@ -14,6 +14,8 @@
             handleClass: '',
             handleMarkup: '',
             replace: false,
+            checked: '✓',
+            unchecked: 'X',
             replaceChars: {
                 '(': '<span>',
                 ')': '</span>'
@@ -24,24 +26,23 @@
             // big stack for all rockjs <ul>
             rocks = [],
             // private methods
-/*isCheckboxChecked = function ($checkbox) {
-                    return $checkbox.is(':checked');
-                },
-                checkCheckbox = function ($checkbox) {
-                    $checkbox.data('checked', true);
-                    $checkbox.attr('checked', true);
-                },
-                uncheckCheckbox = function ($checkbox) {
-                    $checkbox.data('checked', false);
-                    $checkbox.attr('checked', false);
-                },
-                toggleButton = function ($checkbox, $button) {
-                    if ($checkbox.data('checked')) {
-                        $button.addClass('checked');
-                    } else {
-                        $button.removeClass('checked');
-                    }
-                }, */
+            isCheckboxChecked = function ($checkbox) {
+                return $checkbox.is(':checked');
+            },
+            setCheckbox = function ($checkbox, bool) {
+                $checkbox.data('checked', bool);
+                $checkbox.attr('checked', bool);
+            },
+
+            toggleButton = function ($checkbox, $button) {
+                if (!$checkbox.data('checked')) {
+                    $button.addClass('unchecked');
+                    $button.text(settings.unchecked);
+                } else {
+                    $button.removeClass('checked');
+                    $button.text(settings.checked);
+                }
+            },
             parseText = function (text) {
                 $.each(settings.replaceChars, function (index, value) {
                     text = text.replace(index, value);
@@ -55,17 +56,16 @@
                 }
                 return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
             },
-            changeHandleTextAndAria = function($element,text){
-                $element.attr('aria-valuetext',text);
-                if(settings.handleMarkup!==''){
+            changeHandleTextAndAria = function ($element, text) {
+                $element.attr('aria-valuetext', text);
+                if (settings.handleMarkup !== '') {
                     $element.find('*:not(:has("*"))').text(text);
-                    }
-                else {
-                        $element.text(text);
+                } else {
+                    $element.text(text);
                 }
             },
-            setActive = function($element){
-                $element.find('.'+settings.activeClass).removeClass(settings.activeClass);
+            setActive = function ($element) {
+                $element.find('.' + settings.activeClass).removeClass(settings.activeClass);
 
             },
             // close a single <ul>
@@ -89,7 +89,7 @@
                     // close on a click outside
                     'click.rock': function (e) {
                         // check, if we are inside, needed for windows firefox
-                        if (!$.contains(rock.$element[0],e.target)) {
+                        if (!$.contains(rock.$element[0], e.target)) {
 
                             close(rock);
                         }
@@ -105,37 +105,50 @@
         // the magic starts here
         return this.each(function () {
             var $this = $(this);
+
+
             // if element is no <select>, quit
-/*if ($this.is('input[type=checkbox]')) {
+            if ($this.is('input[type=checkbox]')) {
+
                 var $button;
+                $this.hide();
                 $button = $('<button/>', {
                     click: function () {
-                        toggleButton($this, $button);
                         if (isCheckboxChecked($this)) {
-                            uncheckCheckbox($this);
+                            setCheckbox($this, false);
+
                         } else {
-                            checkCheckbox($this);
+                            setCheckbox($this, true);
                         }
-                    },
-                    text: '✓'
+                        toggleButton($this, $button);
+                    }
+
                 });
+                $this.data('checked', isCheckboxChecked($this));
                 toggleButton($this, $button);
-                $this.bind('change', function () {
+
+                $this.bind('change', function (e) {
+                    e.preventDefault();
+                    if (isCheckboxChecked($this)) {
+                        setCheckbox($this, true);
+                    } else {
+                        setCheckbox($this, false);
+                    }
                     toggleButton($this, $button);
                 }).after($button);
-                // /return (jQuery);
-            }*/
+                return (jQuery);
+            }
 
 
             if ($.data(this, 'rock')) {
-
                 return jQuery;
-            } else if ($this.is('select')) {
+            }
+            else if ($this.is('select')) {
 
-
+                $this.hide();
                 var rock = {
-                     buttons: [],
-                     $handle:'rr'
+                    buttons: [],
+                    $handle: null
                 },
                     enter = '',
                     // array for html result
@@ -159,8 +172,7 @@
                 if (options) {
                     $.extend(settings, options);
                 }
-                // hide <select> element in dom
-                //$this.hide();
+
                 // save the text for more performance
                 rock.handleText = $this.find('option:selected').text();
                 // build html
@@ -169,7 +181,7 @@
                 html.push('<ul class="' + settings.optionsClass + '">');
                 // find all <option> and <optgroup>
                 $this.children().each(function () {
-                    // <option> OR <optgroup>
+                    // <option> or <optgroup>
                     var $this = $(this);
                     // hey, it's an <optgroup>
                     if ($this.is('optgroup')) {
@@ -195,18 +207,16 @@
                     $ul.find('button.handle').focus();
                 });
                 // a lot of event delegation for the ul
-
                 rock.$element = $ul
                 // click on a button
                 .delegate('li.option button', 'mousedown.rock', function (e) {
                     var $target = $(e.target);
                     // remove the active class from old element
                     // set <select> value
-
                     $this.val($target.addClass(settings.activeClass).parent().attr('data-value'));
 
                     setActive($target);
-                    changeHandleTextAndAria(rock.$handle,$target.text());
+                    changeHandleTextAndAria(rock.$handle, $target.text());
                     // close it
                     close(rock);
                     // fire callback
@@ -314,14 +324,14 @@
                     var $this = $(this);
                     var value = $this.val();
                     var text = $this.find('option[value=' + value + ']').first().text();
-                    changeHandleTextAndAria(rock.$handle,text);
-                    $ul.find('.'+settings.activeClass).removeClass(settings.activeClass)
-                       .find('ul li[data-value=' + value + '] button').addClass(settings.activeClass);
+                    changeHandleTextAndAria(rock.$handle, text);
+                    $ul.find('.' + settings.activeClass).removeClass(settings.activeClass).find('ul li[data-value=' + value + '] button').addClass(settings.activeClass);
                 });
                 // push all replaced <select> to stack
                 rocks.push(rock);
                 $.data(this, 'rock', rock);
             }
+
             // it's not rockable
             else {
                 return jQuery;
