@@ -14,6 +14,7 @@
             handleClass: '',
             handleMarkup: '',
             replace: false,
+            checkedClass: 'checked',
             checked: '✓',
             unchecked: 'X',
             replaceChars: {
@@ -36,10 +37,10 @@
 
             toggleButton = function ($checkbox, $button) {
                 if (!$checkbox.data('checked')) {
-                    $button.addClass('unchecked');
+                    $button.removeClass(settings.checkedClass);
                     $button.text(settings.unchecked);
                 } else {
-                    $button.removeClass('checked');
+                    $button.addClass(settings.checkedClass);
                     $button.text(settings.checked);
                 }
             },
