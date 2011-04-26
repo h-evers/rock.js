@@ -115,7 +115,7 @@
             if ($this.is('input[type=checkbox]')) {
 
                 var $button;
-                $this.hide();
+                //$this.hide();
                 $button = $('<button/>', {
                     'class': settings.buttonClass,
                     click: function () {
