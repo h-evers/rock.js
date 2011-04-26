@@ -12,8 +12,9 @@
             plainClass: 'rjsplain',
             searchTimeout: 1000,
             handleClass: '',
-            handleMarkup: '',
+            buttonMarkup: '',
             replace: false,
+            buttonClass: 'rockcheck',
             checkedClass: 'checked',
             checked: '✓',
             unchecked: 'X',
@@ -31,17 +32,26 @@
                 return $checkbox.is(':checked');
             },
             setCheckbox = function ($checkbox, bool) {
-                $checkbox.data('checked', bool);
-                $checkbox.attr('checked', bool);
+                $checkbox.data('checked', bool).attr('checked', bool);
             },
-
+            changeHandleTextAndAria = function ($element, text) {
+                $element.attr('aria-valuetext', text);
+                if (settings.buttonMarkup !== '') {
+                    // find the deepest element
+                    $element.find('*:not(:has("*"))').text(text);
+                } else {
+                    $element.text(text);
+                }
+            },
             toggleButton = function ($checkbox, $button) {
                 if (!$checkbox.data('checked')) {
                     $button.removeClass(settings.checkedClass);
-                    $button.text(settings.unchecked);
+                    changeHandleTextAndAria($button, settings.unchecked);
+
+
                 } else {
                     $button.addClass(settings.checkedClass);
-                    $button.text(settings.checked);
+                    changeHandleTextAndAria($button, settings.checked);
                 }
             },
             parseText = function (text) {
@@ -57,14 +67,7 @@
                 }
                 return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button>' + text + '</button></li>';
             },
-            changeHandleTextAndAria = function ($element, text) {
-                $element.attr('aria-valuetext', text);
-                if (settings.handleMarkup !== '') {
-                    $element.find('*:not(:has("*"))').text(text);
-                } else {
-                    $element.text(text);
-                }
-            },
+
             setActive = function ($element) {
                 $element.find('.' + settings.activeClass).removeClass(settings.activeClass);
 
@@ -73,12 +76,12 @@
             close = function (rock) {
                 rock.$element.removeClass(settings.openClass);
                 rock.open = false;
-                $(document).unbind('click.rock').unbind('keyup.rock');
+                $(window.document).unbind('click.rock').unbind('keyup.rock');
             },
             // close all and open the clicked one
             open = function (rock) {
                 // close them all and remove the events
-                $(document).unbind('click.rock').unbind('keyup.rock');
+                $(window.document).unbind('click.rock').unbind('keyup.rock');
                 $.each(rocks, function () {
                     this.$element.removeClass(settings.openClass);
                     this.open = false;
@@ -86,7 +89,7 @@
                 // open it
                 rock.$element.addClass(settings.openClass).find(settings.activeClass).focus();
                 rock.open = true;
-                $(document).bind({
+                $(window.document).bind({
                     // close on a click outside
                     'click.rock': function (e) {
                         // check, if we are inside, needed for windows firefox
@@ -114,6 +117,7 @@
                 var $button;
                 $this.hide();
                 $button = $('<button/>', {
+                    'class': settings.buttonClass,
                     click: function () {
                         if ($this.data('checked')) {
                             setCheckbox($this, false);
@@ -122,9 +126,11 @@
                             setCheckbox($this, true);
                         }
                         toggleButton($this, $button);
+                        settings.onChange.call($this);
                     }
 
-                });
+                }).wrapInner($(settings.buttonMarkup));
+
                 $this.data('checked', isCheckboxChecked($this));
                 toggleButton($this, $button);
 
@@ -143,8 +149,7 @@
 
             if ($.data(this, 'rock')) {
                 return jQuery;
-            }
-            else if ($this.is('select')) {
+            } else if ($this.is('select')) {
 
                 $this.hide();
                 var rock = {
@@ -158,13 +163,13 @@
                         'class': 'rockdown'
                     }),
                     // if iphone, android or windows phone 7, don't replace select
-                    userAgent = navigator.userAgent.toLowerCase();
+                    userAgent = window.navigator.userAgent.toLowerCase();
 
                 if (userAgent.match(/(iphone|android|xblwp7|IEMobile)/)) {
                     $this.addClass(settings.plainClass);
-                    $(document.body).addClass(settings.mobileClass);
+                    $(window.document.body).addClass(settings.mobileClass);
                     if (userAgent.match(/(xblwp7|IEMobile)/)) {
-                        $(document.body).addClass(settings.mobileClassWP7);
+                        $(window.document.body).addClass(settings.mobileClassWP7);
                     }
                     // exit
                     return (jQuery);
@@ -315,7 +320,7 @@
 
 
                 // add custom markup
-                rock.$handle.wrapInner($(settings.handleMarkup));
+                rock.$handle.wrapInner($(settings.buttonMarkup));
                 // save all buttons in array
                 rock.buttons = $ul.find('li.' + settings.optionClass + ' button');
                 // inject the <ul class="rockdown"> in the dom, after the hidden <select>
