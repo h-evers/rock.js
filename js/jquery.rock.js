@@ -134,7 +134,7 @@
                 $this.data('checked', isCheckboxChecked($this));
                 toggleButton($this, $button);
 
-                $this.bind('change', function (e) {
+                $this.bind('click.rock', function (e) {
                     e.preventDefault();
                     if (isCheckboxChecked($this)) {
                         setCheckbox($this, true);
@@ -335,6 +335,7 @@
                 });
                 // push all replaced <select> to stack
                 rocks.push(rock);
+                // save it to prevend to rock it twice
                 $.data(this, 'rock', rock);
             }
 
