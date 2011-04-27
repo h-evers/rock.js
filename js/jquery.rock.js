@@ -135,7 +135,7 @@
                 toggleButton($this, $button);
 
                 $this.bind('click.rock', function (e) {
-                    //e.preventDefault();
+                    e.preventDefault();
                     if (isCheckboxChecked($this)) {
                         setCheckbox($this, true);
                     } else {
