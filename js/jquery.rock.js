@@ -26,6 +26,7 @@
             }
         },
                 timeout = [],
+                radios = [],
             // big stack for all rockjs <ul>
                 rocks = [],
             // private methods
@@ -113,19 +114,47 @@
 
 
             // if element is no <select>, quit
-            if ($this.is('input[type=checkbox]')) {
+            if ($this.is('input[type=checkbox]') ||$this.is('input[type=radio]') ) {
 
                 var $button;
+
+                var name = $this.attr('name');
+
+
+
 
                 $this.hide();
                 $button = $('<button/>', {
                     'class': settings.buttonClass
 
                 }).wrapInner($(settings.buttonMarkup));
-                $this.add("label[for='" + $this.attr('id') + "']").bind(
-                        'click', function(e) {
-                            e.preventDefault();
 
+                if($this.is('[type=radio]') && $('[name='+name+']').length>1){
+                    $this.radio = true;
+                    if (!radios[name]) {
+                        radios[name] = [];
+                    }
+
+                    radios[name].push({'radio':$this,'button':$button});
+                }
+
+
+                $button.add($this).add("label[for='" + $this.attr('id') + "']").bind(
+                        'click.rock', function(e) {
+
+
+                            e.preventDefault();
+                            if($this.radio){
+
+                                $(radios[name]).each(function(){
+                                  if($this!==this.radio){
+
+
+                                      setCheckbox(this.radio,false);
+                                      toggleButton(this.radio, this.button);
+                                  }
+                              });
+                            }
 
                             if ($this.data('checked')) {
                                 setCheckbox($this, false);
@@ -142,16 +171,7 @@
                 $this.data('checked', isCheckboxChecked($this));
                 toggleButton($this, $button);
 
-                $this.bind('click.rock',
-                        function (e) {
-                            e.preventDefault();
-                            if (isCheckboxChecked($this)) {
-                                setCheckbox($this, true);
-                            } else {
-                                setCheckbox($this, false);
-                            }
-                            toggleButton($this, $button);
-                        }).after($button);
+                $this.after($button);
                 return (jQuery);
             }
 
@@ -237,7 +257,7 @@
                             close(rock);
                             // fire callback
                             settings.onChange.call($this);
-                        }).delegate('li.option button', 'mouseup.rock', function (e) {
+                        }).delegate('li.option button', 'mouseup.rock', function () {
                     $(this).trigger('mousedown');
                 })
                     // search, navigate on key event on a button or the handler
@@ -277,7 +297,7 @@
                                 }, settings.searchTimeout);
                                 timeout.push(id);
                                 enter = enter + String.fromCharCode(e.which);
-                                rock.buttons.each(function (index, value) {
+                                rock.buttons.each(function () {
                                     var $this = $(this);
                                     rock.$last = $this;
                                     if ($this.text().toLowerCase().indexOf(enter.toLowerCase()) === 0) {
