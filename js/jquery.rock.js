@@ -212,7 +212,7 @@
                 // save the text for more performance
                 rock.handleText = $this.find('option:selected').text();
                 // build html
-                html.push('<li><button class="handle ' + settings.handleClass + '" aria-valuetext="' + rock.handleText + '">' + rock.handleText + '</button></li>');
+                html.push('<li><button  type="button" class="handle ' + settings.handleClass + '" aria-valuetext="' + rock.handleText + '">' + rock.handleText + '</button></li>');
                 html.push('<li>');
                 html.push('<ul class="' + settings.optionsClass + '">');
                 // find all <option> and <optgroup>
