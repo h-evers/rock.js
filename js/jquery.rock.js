@@ -14,8 +14,9 @@
             handleClass: '',
             buttonMarkup: '',
             replace: false,
-            buttonClass: 'rockcheck',
+            buttonClassCheckbox: 'rockcheck',
             checkedClass: 'checked',
+            buttonClassRadio: 'rockradio',
             checked: '✓',
             unchecked: 'X',
             replaceChars: {
@@ -114,29 +115,29 @@
 
 
             // if element is no <select>, quit
-            if ($this.is('input[type=checkbox]') ||$this.is('input[type=radio]') ) {
+            if ($this.is('input[type=checkbox]') || $this.is('input[type=radio]')) {
 
                 var $button;
 
                 var name = $this.attr('name');
 
 
-
+                if ($this.is('[type=radio]') && $('[name=' + name + ']').length > 1) {
+                    $this.radio = true;
+                }
 
                 $this.hide();
                 $button = $('<button/>', {
-                    'class': settings.buttonClass
+                    'class': $this.radio ? settings.buttonClassRadio : settings.buttonClassCheckbox
 
                 }).wrapInner($(settings.buttonMarkup));
 
-                if($this.is('[type=radio]') && $('[name='+name+']').length>1){
-                    $this.radio = true;
-                    if (!radios[name]) {
-                        radios[name] = [];
-                    }
 
-                    radios[name].push({'radio':$this,'button':$button});
+                if (!radios[name]) {
+                    radios[name] = [];
                 }
+
+                radios[name].push({'radio':$this,'button':$button});
 
 
                 $button.add($this).add("label[for='" + $this.attr('id') + "']").bind(
@@ -144,16 +145,16 @@
 
 
                             e.preventDefault();
-                            if($this.radio){
+                            if ($this.radio) {
 
-                                $(radios[name]).each(function(){
-                                  if($this!==this.radio){
+                                $(radios[name]).each(function() {
+                                    if ($this !== this.radio) {
 
 
-                                      setCheckbox(this.radio,false);
-                                      toggleButton(this.radio, this.button);
-                                  }
-                              });
+                                        setCheckbox(this.radio, false);
+                                        toggleButton(this.radio, this.button);
+                                    }
+                                });
                             }
 
                             if ($this.data('checked')) {
