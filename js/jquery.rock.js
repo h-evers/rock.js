@@ -113,7 +113,7 @@
                 if ($this.is('[type=radio]') && $('[name=' + name + ']').length > 1) {
                     $this.radio = true;
                 }
-                //$this.hide();
+                $this.hide();
                 $button = $('<button/>', {
                     'class': $this.radio ? settings.buttonClassRadio : settings.buttonClassCheckbox
                 }).wrapInner($(settings.buttonMarkup));
