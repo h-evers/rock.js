@@ -3,6 +3,7 @@
 ul.rockdown {
 	font-size: 13px;
 	width: 180px;
+    position: relative;
 }
 
 ul.rockdown ul.options {
@@ -12,9 +13,11 @@ ul.rockdown ul.options {
 	background: #fff;
 	background: rgba(255,255,255,0.97);
 	border: 1px #ccc solid;
-	overflow: auto;
+
 	position: absolute;
-	max-height: 250px;
+    top:100%;
+    left:0;
+
 }
 
 ul.rockdown ul.options::-webkit-scrollbar {
@@ -48,7 +51,7 @@ body.rjsmo select {
 	-moz-box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 3px;
 	background: #b22823 url(down.png) right center no-repeat;
 	color: #fff;
-	display: block;
+
 	padding: 7px 32px 7px 11px;
 /*	overflow: hidden; white-space: nowrap; text-overflow: ellipsis; */
 }

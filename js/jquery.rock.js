@@ -209,7 +209,7 @@
                     }
                 });
                 html.push('</ul>');
-                html.push('</li></ul>');
+                html.push('</li>');
                 // simulate the click on the linked label
                 $('label[for=' + $this.attr('name') + ']').bind('click.rock', function (e) {
                     e.preventDefault();
@@ -313,6 +313,7 @@
                 });
                 // inject a lot of html to the <ul class="rockdown">
                 $ul.append(html.join(""));
+                //console.log(html.join(""));
                 rock.$handle = $ul.find('button.handle');
                 // add custom markup
                 rock.$handle.wrapInner($(settings.buttonMarkup));
