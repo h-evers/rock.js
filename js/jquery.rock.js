@@ -68,8 +68,8 @@
                     }
                     return '<li role="option" data-value="' + $element.attr('value') + '" class="' + settings.optionClass + '"><button type="button">' + text + '</button></li>';
                 },
-                setActive = function ($element) {
-                    $element.find('.' + settings.activeClass).removeClass(settings.activeClass);
+                removeActive = function ($el) {
+                    $el.find('.' + settings.activeClass).removeClass(settings.activeClass);
                 },
             // close a single <ul>
                 close = function (rock) {
@@ -220,9 +220,11 @@
                         function (e) {
                             var $target = $(e.target);
                             // remove the active class from old element
-                            // set <select> value
-                            $this.val($target.addClass(settings.activeClass).parent().attr('data-value'));
-                            setActive($target);
+                            removeActive(rock.$element);
+                            $target.addClass(settings.activeClass);
+                            // set value, set <select> value
+                            $this.val($target.parent().attr('data-value'));
+
                             changeHandleTextAndAria(rock.$handle, $target.text());
                             // close it
                             close(rock);
