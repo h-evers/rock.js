@@ -73,6 +73,7 @@
                 },
             // close a single <ul>
                 close = function (rock) {
+
                     rock.$element.removeClass(settings.openClass);
                     rock.open = false;
                     $(window.document).unbind('click.rock').unbind('keyup.rock');
@@ -218,6 +219,10 @@
                     // click on a button
                         .delegate('li.option button', 'mousedown.rock keypress.rock',
                         function (e) {
+
+                            if(!(e.which===32 || e.which===13)){
+                                return;
+                            }
                             var $target = $(e.target);
                             // remove the active class from old element
                             removeActive(rock.$element);
@@ -236,9 +241,11 @@
                     // search, navigate on key event on a button or the handler
                         .delegate('li.option button,button.handle', 'keydown.rock',
                         function (e) {
+                            //console.log(e.which);
                             if (e.which === 40 || e.which === 38) {
                                 enter = '';
                                 e.preventDefault();
+                                e.stopPropagation();
                                 // find the clicked button in the array, not in the DOM
                                 rock.buttons.each(function (index, value) {
                                     // button found
@@ -248,7 +255,7 @@
                                             // just be sure, there is a next button
                                             if (index + 1 < rock.buttons.length) {
                                                 // go to next element and focus it, for ie6 we should add a hover class
-                                                rock.buttons.get(index + 1).focus();
+                                                 rock.buttons.get(index + 1).focus();
                                             }
                                         }
                                         if (e.which === 38) {
@@ -290,6 +297,7 @@
                     // events on the handle
                         .delegate('button.handle', 'mousedown.rock',
                         function (e) {
+
                             e.preventDefault();
                             $ul.find('button.handle').focus();
                             // please close it
@@ -301,9 +309,11 @@
                             }
                         }).delegate('button.handle', 'mouseup.rock',
                         function (e) {
+
                             $(this).trigger('click');
                             e.preventDefault();
                         }).delegate('button.handle', 'keyup.rock', function (e) {
+
                             // arrow down
                             if (e.which === 40 || e.which === 32) {
                                 // open it
