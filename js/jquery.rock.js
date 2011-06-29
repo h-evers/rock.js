@@ -217,12 +217,8 @@
                 // a lot of event delegation for the ul
                 rock.$element = $ul
                     // click on a button
-                        .delegate('li.option button', 'mousedown.rock keypress.rock',
+                        .delegate('li.option button', 'mousedown.rock',
                         function (e) {
-
-                            if(!(e.which===32 || e.which===13)){
-                                return;
-                            }
                             var $target = $(e.target);
                             // remove the active class from old element
                             removeActive(rock.$element);
@@ -241,7 +237,12 @@
                     // search, navigate on key event on a button or the handler
                         .delegate('li.option button,button.handle', 'keydown.rock',
                         function (e) {
-                            //console.log(e.which);
+
+
+                            if(e.which === 32 || e.which ===13){
+                                            $(this).trigger('mousedown.rock');
+                                        }
+
                             if (e.which === 40 || e.which === 38) {
                                 enter = '';
                                 e.preventDefault();
@@ -265,9 +266,12 @@
                                                 rock.buttons.get(index - 1).focus();
                                             }
                                         }
+
                                     }
                                 });
-                            } else {
+                            }
+
+                            else {
                                 //clear all timeouts
                                 $.each(timeout, function () {
                                     window.clearTimeout(this);
