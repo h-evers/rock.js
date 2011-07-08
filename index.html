@@ -16,12 +16,24 @@
 		ul.rockdown, select {
 			margin: 20px;
 		}
+        ul.rating span.star {
+            background: url(css/stars_big_8bit.png) no-repeat;
+            padding: 0 6px;
+            line-height: 16px;
+        }
+        ul.rating button {
+           background-color: #F3F2EA;
+        }
 	</style>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jquery.rock.js"></script>
 	<script type="text/javascript">
 	    $(document).ready(function ($) {
 	        $('select,input').rocks({
+                replace:true,
+        replaceChars: {
+                '*': '<span class="star">&nbsp;</span>'
+            },
                 onChange:function(){
                     //alert('yes');
                 }
@@ -56,5 +68,16 @@
     </select>
     <div class="rocks_not">bla bla</div>
         </form>
+
+
+                <select id="rating" class="rating" name="rating">
+                <option>Bitte wählen</option>
+                <option>*&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                <option>**&nbsp;&nbsp;&nbsp;</option>
+                <option>***&nbsp;&nbsp;</option>
+                <option>****&nbsp;</option>
+
+                <option>*****</option>
+            </select>
 </body>
 </html>
