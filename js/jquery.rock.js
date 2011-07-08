@@ -41,9 +41,9 @@
                     $element.attr('aria-valuetext', text);
                     if (settings.buttonMarkup !== '') {
                         // find the deepest element
-                        $element.find('*:not(:has("*"))').text(text);
+                        $element.find('*:not(:has("*"))').html(text);
                     } else {
-                        $element.text(text);
+                        $element.html(text);
                     }
                 },
                 toggleButton = function ($checkbox, $button) {
@@ -57,7 +57,11 @@
                 },
                 parseText = function (text) {
                     $.each(settings.replaceChars, function (index, value) {
-                        text = text.replace(index, value);
+                       var chars = text.split('');
+                       $.each(chars,function(){
+                            text = text.replace(index, value);
+                        });
+
                     });
                     return text;
                 },
@@ -183,7 +187,7 @@
                     $.extend(settings, options);
                 }
                 // save the text for more performance
-                rock.handleText = $this.find('option:selected').text();
+                rock.handleText = $this.find('option:selected').html();
                 // build html
                 html.push('<li><button  type="button" class="handle ' + settings.handleClass + '" aria-valuetext="' + rock.handleText + '">' + rock.handleText + '</button>');
                 html.push('<ul class="' + settings.optionsClass + '">');
@@ -226,7 +230,7 @@
                             // set value, set <select> value
                             $this.val($target.parent().attr('data-value'));
 
-                            changeHandleTextAndAria(rock.$handle, $target.text());
+                            changeHandleTextAndAria(rock.$handle, $target.html());
                             // close it
                             close(rock);
                             // fire callback
@@ -343,7 +347,7 @@
                 $this.bind('change', function () {
                     var $this = $(this);
                     var value = $this.val();
-                    var text = $this.find('option[value=' + value + ']').first().text();
+                    var text = $this.find('option[value=' + value + ']').first().html();
                     changeHandleTextAndAria(rock.$handle, text);
                     $ul.find('.' + settings.activeClass).removeClass(settings.activeClass).find('ul li[data-value=' + value + '] button').addClass(settings.activeClass);
                 });
