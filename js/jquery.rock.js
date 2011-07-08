@@ -37,13 +37,14 @@
                 setCheckbox = function ($checkbox, bool) {
                     $checkbox.data('checked', bool).attr('checked', bool);
                 },
-                changeHandleTextAndAria = function ($element, text) {
+                changeHandleTextAndAria = function ($element, html) {
+                    var text = $(html).text();
                     $element.attr('aria-valuetext', text);
                     if (settings.buttonMarkup !== '') {
                         // find the deepest element
-                        $element.find('*:not(:has("*"))').html(text);
+                        $element.find('*:not(:has("*"))').html(html);
                     } else {
-                        $element.html(text);
+                        $element.html(html);
                     }
                 },
                 toggleButton = function ($checkbox, $button) {
@@ -223,7 +224,7 @@
                     // click on a button
                         .delegate('li.option button', 'mousedown.rock',
                         function (e) {
-                            var $target = $(e.target);
+                            var $target = $(this);
                             // remove the active class from old element
                             removeActive(rock.$element);
                             $target.addClass(settings.activeClass);
