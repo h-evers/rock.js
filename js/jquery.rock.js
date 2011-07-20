@@ -171,7 +171,9 @@
                         html = [],
                         $ul = $('<ul/>', {
                             'class': 'rockdown'
-                        }).addClass($this.attr('class')),
+                        }).addClass($this.attr('class')).attr({
+                            'for':$this.attr('name')
+                            }),
                     // if iphone, android or windows phone 7, don't replace select
                         userAgent = window.navigator.userAgent.toLowerCase();
                 if (userAgent.match(/(iphone|android|xblwp7|IEMobile)/)) {
