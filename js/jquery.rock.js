@@ -145,7 +145,10 @@
                     if (!$this.data('checked')) {
                         setCheckbox($this, true);
                         toggleButton($this, $button);
-                        settings.onChange.call($this);
+                        var callback = settings.onChange.call($this);
+                        if(typeof(callback) === 'undefined'){
+                            $this.trigger('change')
+                        }
                     }
                 });
                 $this.bind('change.rock', function (e) {
