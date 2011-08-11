@@ -146,7 +146,7 @@
                         setCheckbox($this, true);
                         toggleButton($this, $button);
                         var callback = settings.onChange.call($this);
-                        if(typeof(callback) === 'undefinded'){
+                        if(typeof(callback) === 'undefined'){
                             $this.trigger('change')
                         }
                     }
