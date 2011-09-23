@@ -46,6 +46,7 @@
                     } else {
                         $element.html(html);
                     }
+
                 },
                 toggleButton = function ($checkbox, $button) {
                     if (!$checkbox.data('checked')) {
@@ -112,7 +113,22 @@
                 };
         // the magic starts here
         return this.each(function () {
-            var $this = $(this);
+            var $this = $(this),
+
+                // if iphone, android or windows phone 7, don't replace select
+                userAgent = window.navigator.userAgent.toLowerCase();
+                if (userAgent.match(/(iphone|android|xblwp7|IEMobile)/)) {
+                    $this.addClass(settings.plainClass);
+                    $(window.document.body).addClass(settings.mobileClass);
+                    if (userAgent.match(/(xblwp7|IEMobile)/)) {
+                        $(window.document.body).addClass(settings.mobileClassWP7);
+                    }
+                    // exit
+                    return (jQuery);
+                }
+
+
+
             // if element is no <select>, quit
             if ($this.is('input[type=checkbox]') || $this.is('input[type=radio]')) {
                 var $button;
@@ -161,9 +177,13 @@
                 $this.after($button);
                 return (jQuery);
             }
+
             if ($.data(this, 'rock')) {
                 return jQuery;
-            } else if ($this.is('select')) {
+            }
+            else if ($this.is('select')) {
+
+
                 $this.hide();
                 var rock = {
                     buttons: [],
@@ -176,18 +196,8 @@
                             'class': 'rockdown'
                         }).addClass($this.attr('class')).attr({
                             'for':$this.attr('name')
-                            }),
-                    // if iphone, android or windows phone 7, don't replace select
-                        userAgent = window.navigator.userAgent.toLowerCase();
-                if (userAgent.match(/(iphone|android|xblwp7|IEMobile)/)) {
-                    $this.addClass(settings.plainClass);
-                    $(window.document.body).addClass(settings.mobileClass);
-                    if (userAgent.match(/(xblwp7|IEMobile)/)) {
-                        $(window.document.body).addClass(settings.mobileClassWP7);
-                    }
-                    // exit
-                    return (jQuery);
-                }
+                            });
+
                 // set custom settings
                 if (options) {
                     $.extend(settings, options);
@@ -195,7 +205,7 @@
                 // save the text for more performance
                 rock.handleText = $this.find('option:selected').html();
                 // build html
-                html.push('<li><button  type="button" class="handle ' + settings.handleClass + '" aria-valuetext="' + rock.handleText + '">' + rock.handleText + '</button>');
+                html.push('<li><button  type="button" class="handle ' + settings.handleClass + '" aria-valuetext="' + rock.handleText + '">' + rock.handleText +'</button>');
                 html.push('<ul class="' + settings.optionsClass + '">');
                 // find all <option> and <optgroup>
                 $this.children().each(function () {
@@ -248,12 +258,12 @@
                         .delegate('li.option button,button.handle', 'keydown.rock',
                         function (e) {
 
-
                             if(e.which === 32 || e.which ===13){
                                             $(this).trigger('mousedown.rock');
                                         }
 
                             if (e.which === 40 || e.which === 38) {
+
                                 enter = '';
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -282,10 +292,15 @@
                             }
 
                             else {
+
+
+
                                 //clear all timeouts
                                 $.each(timeout, function () {
                                     window.clearTimeout(this);
                                 });
+
+
                                 var id = window.setTimeout(function () {
                                     enter = '';
                                 }, settings.searchTimeout);
@@ -296,7 +311,7 @@
                                     rock.$last = $this;
                                     if ($this.text().toLowerCase().indexOf(enter.toLowerCase()) === 0) {
                                         if (!rock.open) {
-                                            $this.trigger('click.rock');
+                                            $this.trigger('mousedown.rock');
                                         } else {
                                             $this.hover().focus();
                                         }
@@ -311,7 +326,6 @@
                     // events on the handle
                         .delegate('button.handle', 'mousedown.rock',
                         function (e) {
-
                             e.preventDefault();
                             $ul.find('button.handle').focus();
                             // please close it
@@ -341,10 +355,10 @@
                         });
                 // inject a lot of html to the <ul class="rockdown">
                 $ul.append(html.join(""));
-                //console.log(html.join(""));
                 rock.$handle = $ul.find('button.handle');
                 // add custom markup
                 rock.$handle.wrapInner($(settings.buttonMarkup));
+
                 // save all buttons in array
                 rock.buttons = $ul.find('li.' + settings.optionClass + ' button');
                 // inject the <ul class="rockdown"> in the dom, after the hidden <select>
