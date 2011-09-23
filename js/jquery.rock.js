@@ -129,8 +129,9 @@
 
 
 
-            // if element is no <select>, quit
+
             if ($this.is('input[type=checkbox]') || $this.is('input[type=radio]')) {
+
                 var $button;
                 var name = $this.attr('name');
                 if ($this.is('[type=radio]') && $('[name=' + name + ']').length > 1) {
@@ -147,9 +148,11 @@
                     'radio': $this,
                     'button': $button
                 });
+
                 // events for radios, buttons and labels
                 $button.add("label[for='" + $this.attr('id') + "']").bind('click.rock', function (e) {
                     e.preventDefault();
+
                     if ($this.radio) {
                         $(radios[name]).each(function () {
                             if ($this !== this.radio) {
@@ -158,6 +161,7 @@
                             }
                         });
                     }
+
                     if (!$this.data('checked')) {
                         setCheckbox($this, true);
                         toggleButton($this, $button);
@@ -166,11 +170,15 @@
                             $this.trigger('change')
                         }
                     }
+                    else  {
+                        if(!$this.radio){
+                            setCheckbox($this, false);
+                            toggleButton($this, $button);
+                        }
+
+                    }
                 });
-                $this.bind('change.rock', function (e) {
-                    e.preventDefault();
-                    $this.data('button').trigger('click.rock');
-                });
+
                 $this.data('checked', isCheckboxChecked($this));
                 toggleButton($this, $button);
                 $this.data('button', $button);
