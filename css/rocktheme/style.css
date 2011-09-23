@@ -13,11 +13,10 @@ ul.rockdown ul.options {
 	background: #fff;
 	background: rgba(255,255,255,0.97);
 	border: 1px #ccc solid;
-
 	position: absolute;
     top:100%;
     left:0;
-
+	z-index: 1;
 }
 
 ul.rockdown ul.options::-webkit-scrollbar {
