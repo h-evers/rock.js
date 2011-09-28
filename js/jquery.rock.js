@@ -188,7 +188,7 @@
                                 }
                         }
                         else {
-                            console.log('do nothing');
+                            //console.log('do nothing');
                         }
 
                     }
