@@ -113,6 +113,10 @@
                 };
         // the magic starts here
         return this.each(function () {
+                // set custom settings
+                if (options) {
+                    $.extend(settings, options);
+                }
             var $this = $(this),
 
                 // if iphone, android or windows phone 7, don't replace select
@@ -206,10 +210,7 @@
                             'for':$this.attr('name')
                             });
 
-                // set custom settings
-                if (options) {
-                    $.extend(settings, options);
-                }
+
                 // save the text for more performance
                 rock.handleText = $this.find('option:selected').html();
                 // build html
