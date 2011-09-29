@@ -137,7 +137,7 @@
             if ($this.is('input[type=checkbox]') || $this.is('input[type=radio]')) {
 
                 var $button,
-                    callback = settings.onChange.call($this),
+                    callback = settings.onChange,
                     name = $this.attr('name');
 
                 if ($this.is('[type=radio]') && $('[name=' + name + ']').length > 1) {
