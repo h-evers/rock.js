@@ -250,7 +250,7 @@
                 html.push('</ul>');
                 html.push('</li>');
                 // simulate the click on the linked label
-                $('label[for=' + $this.attr('name') + ']').bind('click.rock', function (e) {
+                $('label[for=' + $this.attr('id') + ']').bind('click.rock', function (e) {
                     e.preventDefault();
                     $ul.find('button.handle').focus();
                 });
