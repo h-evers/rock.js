@@ -140,7 +140,7 @@
                     callback = settings.onChange,
                     name = $this.attr('name');
 
-                if ($this.is('[type=radio]') && $('[name=' + name + ']').length > 1) {
+                if ($this.is('[type=radio]') && $('[name="' + name + '"]').length > 1) {
                     $this.radio = true;
                 }
                 $this.hide();
